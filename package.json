@@ -1,0 +1,31 @@
+{
+  "name": "signal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rm -rf dist/ & tsc",
+    "run": "node ./dist/index.js",
+    "buildAndRun": "npm run build & npm run run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Turtlepaw/signal.git"
+  },
+  "author": "Turtlepaw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Turtlepaw/signal/issues"
+  },
+  "homepage": "https://github.com/Turtlepaw/signal#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@types/klaw-sync": "^6.0.1",
+    "klaw-sync": "^6.0.0"
+  }
+}
