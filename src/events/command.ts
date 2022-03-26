@@ -10,7 +10,9 @@ export default class InteractionCommandEvent extends Event {
 
     async execute(client: Client<boolean>, interaction: Interaction): Promise<void> {
         if(!interaction.isCommand()) return;
+        const Command = client.commands.all.find(e => e.name == interaction.commandName);
+        if(!Command) return //ErrorMessage();
 
-        
+        client.commands.all 
     }
 }

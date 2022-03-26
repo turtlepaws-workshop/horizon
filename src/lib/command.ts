@@ -18,6 +18,10 @@ export default class Command {
         .setDescription(options.description);
     }
 
+    builderJSON(){
+        return this.builder.toJSON();
+    }
+
     async execute(
         interaction: CommandInteraction,
         client: Client

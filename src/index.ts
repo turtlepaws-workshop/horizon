@@ -23,13 +23,17 @@ const client = new Client({
     ]
 });
 
-client.commands = new Collection<string, Command>();
+client.commands = {
+    private: [],
+    public: [],
+    all: []
+};
 
 const EventFiles = klawSync("./dist/events", { nodir: true, traverseAll: true, filter: f => f.path.endsWith('.js') });
 
 for(const EventFile of EventFiles){
-    const event = require(EventFile.path);
-    if(event == null) continue;
+    const rEvent = require(EventFile.path);
+    const event = new rEvent.default();
 
     if (event?.once) {
         client.once(event.event, (...args) => event.execute(client, ...args));
@@ -38,17 +42,9 @@ for(const EventFile of EventFiles){
     }
 }
 
-const CommandFiles = klawSync("./dist/commands", { nodir: true, traverseAll: true, filter: f => f.path.endsWith('.js') });
-
-for(const CommandFile of CommandFiles){
-    const command = require(CommandFile.path);
-    if(!command || command?.isCommand == false) continue;
-
-    client.commands.set(command.name, command);
-}
-
 client.on("ready", async () => {
     await registerCommands(client);
+    console.log(`[CLIENT] Ready as ${client.user.username}...`)
 });
 
 client.login(token);

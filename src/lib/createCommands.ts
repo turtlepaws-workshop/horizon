@@ -3,18 +3,33 @@ import { Routes } from "discord-api-types/v9";
 import { token, clientId } from "../config/secrets.json";
 import { TestGuild } from "../config/config";
 import { ApplicationCommand, Client } from "discord.js";
+import * as klawSync from "klaw-sync";
 
 export async function registerCommands(client: Client) {
     const rest = new REST({ version: '9' }).setToken(token);
 
-    const Commands1 = client.commands.map(e => {
-        if(e.dev) return;
-        return e.builder.toJSON();
-    }); //Private
-    const Commands2 = client.commands.map(e => {
-        if(!e.dev) return;
-        return e.builder.toJSON();
-    }); //Public
+    const Commands1 = []; //Private
+    const Commands2 = []; //Public
+
+    const CommandFiles = klawSync("./dist/commands", { nodir: true, traverseAll: true, filter: f => f.path.endsWith('.js') });
+
+    for (const CommandFile of CommandFiles) {
+        const rCommand = require(CommandFile.path);
+        const command = new rCommand.default();
+        if (!command || command?.isCommand == false) continue;
+
+        const json = command.builder.toJSON();
+
+        if(command.dev){
+            Commands1.push(json);
+        } else {
+            Commands2.push(json);
+        }
+    }
+
+    client.commands.private = Commands1;
+    client.commands.public = Commands2;
+    client.commands.all = [...Commands2, ...Commands1];
 
     rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1 })
         .then((commands: ApplicationCommand[]) => {

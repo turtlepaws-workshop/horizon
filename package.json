@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf dist/ & tsc",
     "run": "node ./dist/index.js",
-    "buildAndRun": "npm run build & npm run run"
+    "buildAndRun": "npm run build && npm run run"
   },
   "repository": {
     "type": "git",
