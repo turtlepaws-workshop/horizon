@@ -1,5 +1,6 @@
 import { Client, Collection } from "discord.js";
-import * as klawSync from "klaw-sync";
+import emojiManager from "./client/emojiManager";
+import events from "./client/events";
 import { token } from "./config/secrets.json";
 import Command from "./lib/command";
 import { registerCommands } from "./lib/createCommands";
@@ -23,28 +24,35 @@ const client = new Client({
     ]
 });
 
+//Create client varibles
 client.commands = {
     private: [],
     public: [],
     all: []
 };
+client.events = new Collection();
+client.customEmojis = new Collection();
+client.customEmojisReady = false;
 
-const EventFiles = klawSync("./dist/events", { nodir: true, traverseAll: true, filter: f => f.path.endsWith('.js') });
+//init events
+events(client);
 
-for(const EventFile of EventFiles){
-    const rEvent = require(EventFile.path);
-    const event = new rEvent.default();
-
-    if (event?.once) {
-        client.once(event.event, (...args) => event.execute(client, ...args));
-    } else {
-        client.on(event.event, (...args) => event.execute(client, ...args));
-    }
-}
-
+//Wait for when the bot is ready
 client.on("ready", async () => {
+    //Request commands on Discord API
     await registerCommands(client);
+    //Log that the bots ready
     console.log(`[CLIENT] Ready as ${client.user.username}...`)
+    //Wait for client to be FULLY ready (for emojis, caches, etc...)
+    setTimeout(async () => {
+        //Init emoji manager
+        await emojiManager(client);
+        //Log that they are ready
+        console.log(`[CLIENT] Emojis ready`)
+        //Update client status
+        client.customEmojisReady = true;
+    }, 4000);
 });
 
+//Login with our super secret token!
 client.login(token);

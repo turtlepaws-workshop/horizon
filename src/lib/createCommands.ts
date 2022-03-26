@@ -18,12 +18,10 @@ export async function registerCommands(client: Client) {
         const command = new rCommand.default();
         if (!command || command?.isCommand == false) continue;
 
-        const json = command.builder.toJSON();
-
         if(command.dev){
-            Commands1.push(json);
+            Commands1.push(command);
         } else {
-            Commands2.push(json);
+            Commands2.push(command);
         }
     }
 
@@ -31,14 +29,14 @@ export async function registerCommands(client: Client) {
     client.commands.public = Commands2;
     client.commands.all = [...Commands2, ...Commands1];
 
-    rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1 })
+    rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1.map(e => e.builder.toJSON()) })
         .then((commands: ApplicationCommand[]) => {
             client.rawGuildCommands = commands
             console.log('[COMMANDS] Successfully registered application commands. (Private)');
         })
         .catch(console.error);
 
-    rest.put(Routes.applicationCommands(clientId), { body: Commands2 })
+    rest.put(Routes.applicationCommands(clientId), { body: Commands2.map(e => e.builder.toJSON()) })
         .then((commands: ApplicationCommand[]) => {
             client.rawCommands = commands
             console.log('[COMMANDS] Successfully registered application commands. (Public)')
