@@ -12,7 +12,6 @@ export default class Invite extends Command {
             name: `userinfo`,
             requiredPermissions: [],
             runPermissions: [],
-            dev: true,
             somePermissions: [],
         }, new SlashCommandOptionBuilder()
             .addUserOption(

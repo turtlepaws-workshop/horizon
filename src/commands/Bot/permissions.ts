@@ -11,7 +11,6 @@ export default class Invite extends Command {
             name: `permissions`,
             requiredPermissions: [],
             runPermissions: [],
-            dev: true,
             somePermissions: []
         });
     }
