@@ -17,7 +17,7 @@ export default class Invite extends Command {
 
     async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
         await interaction.reply({
-            content: `Signal is a **fully** open-source Discord bot! You can view our github with the link below.`,
+            content: `${client.customEmojis.get("github")} Signal is a fully open-source Discord bot! You can view our github with the link below.`,
             components: [
                 {
                     type: 1,

@@ -25,6 +25,17 @@ export async function registerCommands(client: Client) {
         }
     }
 
+    for (const MenuFile of client.menus.values()) {
+        const menu = MenuFile;
+        if (!menu) continue;
+
+        if(menu.dev){
+            Commands1.push(menu);
+        } else {
+            Commands2.push(menu);
+        }
+    }
+
     client.commands.private = Commands1;
     client.commands.public = Commands2;
     client.commands.all = [...Commands2, ...Commands1];

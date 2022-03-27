@@ -1,27 +1,21 @@
-import { codeBlock, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, MessageButton, GuildMember } from "discord.js";
-import { Embed } from "../../util/embed";
-import { calculatePermissionForRun, Timestamp } from "../../util/util";
-import Command from "../../lib/command";
-import SlashCommandOptionBuilder from "../../lib/optionBuilder";
+import { CacheType, Client, ContextMenuInteraction, GuildMember, MessageButton } from "discord.js";
+import { Embed } from ".././util/embed";
+import { Timestamp } from ".././util/util";
+import Menu from ".././lib/menu";
 
-export default class Invite extends Command {
+export default class UserInfoMenu extends Menu {
     constructor(){
         super({
-            description: `Get info on a user in this server.`,
-            name: `userinfo`,
+            type: "USER",
+            name: `User Info`,
             requiredPermissions: [],
             runPermissions: [],
             somePermissions: [],
-        }, new SlashCommandOptionBuilder()
-            .addUserOption(
-                `user`,
-                `The user you want info on.`
-            )
-        );
+            dev: true
+        });
     }
 
-    async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
+    async execute(interaction: ContextMenuInteraction<CacheType>, client: Client<boolean>): Promise<void> {
         //@ts-ignore
         const user: GuildMember = interaction.options.getMember("user") || interaction.member;
         const hasBanner = () => {
@@ -30,6 +24,14 @@ export default class Invite extends Command {
                 return true;
             } catch {
                 return false;
+            }
+        }
+        const bannerURL = () => {
+            try {
+                const url = user.user.bannerURL();
+                return url;
+            } catch {
+                return null;
             }
         }
         
@@ -41,11 +43,14 @@ export default class Invite extends Command {
             .addField(`${client.customEmojis.get("art")} Role Color`, `\`${user.displayHexColor}\``)
             .addField(`${client.customEmojis.get("secure")} Pending Verification`, `${user.pending ? "✅" : "❌"}`)
             .addField(`${client.customEmojis.get("role")} Roles`, `${user.roles.cache.map(e => `${e}`).join(" ")}`)
+            .addField(`${client.customEmojis.get("art")} Accent Color`, `\`${user.user.hexAccentColor || "None"}\``)
+            .addField(`${client.customEmojis.get("channel")} Tag`, `\`${user.user.tag}\``)
             .setThumbnail(user.displayAvatarURL())
             .setFooter({
                 text: `${user.id}`,
                 iconURL: client.customEmojis.get("ID").URL
             })
+            .setImage(bannerURL())
             .build(),
             components: [
                 {
@@ -58,11 +63,12 @@ export default class Invite extends Command {
                         new MessageButton()
                         .setLabel(`Banner URL${hasBanner() ? "" : " (Disabled)"}`)
                         .setStyle(`LINK`)
-                        .setURL(user.displayAvatarURL() || "https://discord.com/404")
+                        .setURL(bannerURL() || "https://discord.com/404")
                         .setDisabled(!hasBanner())
                     ]
                 }
-            ]
+            ],
+            ephemeral: true
         });
     }
 }

@@ -1,6 +1,7 @@
 import { Client, Collection } from "discord.js";
 import emojiManager from "./client/emojiManager";
 import events from "./client/events";
+import menus from "./client/menus";
 import { token } from "./config/secrets.json";
 import Command from "./lib/command";
 import { registerCommands } from "./lib/createCommands";
@@ -33,9 +34,13 @@ client.commands = {
 client.events = new Collection();
 client.customEmojis = new Collection();
 client.customEmojisReady = false;
+client.menus = new Collection();
 
 //init events
 events(client);
+
+//init menus
+menus(client);
 
 //Wait for when the bot is ready
 client.on("ready", async () => {
