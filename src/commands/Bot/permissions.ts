@@ -1,5 +1,5 @@
 import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client } from "discord.js";
+import { CommandInteraction, CacheType, Client, PermissionString } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun } from "../../util/util";
 import Command from "../../lib/command";
@@ -17,8 +17,12 @@ export default class Invite extends Command {
 
     async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
         const permisisonsRequired = calculatePermissionForRun(client);
+        const r_ = client.customEmojis.get("r_");
         const botMe = interaction.guild.me;
-        const mappedPermissionsString: string = permisisonsRequired.toArray().map(e => (botMe.permissions.has(e) ? `✅ ` : `❌ `) + codeBlock(e)).join("\n");
+        function needsPermission(permission: PermissionString){
+            return permisisonsRequired.has(permission);
+        }
+        const mappedPermissionsString: string = botMe.permissions.toArray().map(e => (botMe.permissions.has(e) ? `${client.customEmojis.get("check_")}${needsPermission(e) ? r_ : ""} ` : `${client.customEmojis.get("xmark_")}${needsPermission(e) ? r_ : ""} `) + `\`${e}\``).join("\n");
         const clientInvite: string = client.generateInvite({
             scopes: ["applications.commands", "bot"],
             permissions: permisisonsRequired
@@ -27,8 +31,7 @@ export default class Invite extends Command {
         await interaction.reply({
             embeds: new Embed()
             .setTitle(`Bot Permissions`)
-            .addField(`${client.customEmojis.get("invite")} Invite Link`, `[Click Here](${clientInvite})`)
-            .addField(`${client.customEmojis.get("secure")} Bot Permissions`, mappedPermissionsString.length <= 0 ? "No permissions missing..." : mappedPermissionsString)
+            .setDescription(`${client.customEmojis.get("question_mark")} Required permissions will have a ${client.customEmojis.get("r_")}\n\n` + mappedPermissionsString)
             .build()
         });
     }
