@@ -40,8 +40,14 @@ export default class Invite extends Command {
                     })
                 }),
             requiredPermissions: [],
-            runPermissions: [],
-            somePermissions: []
+            runPermissions: [
+                "SEND_MESSAGES"
+            ],
+            somePermissions: [
+                "MANAGE_GUILD",
+                "MANAGE_MESSAGES",
+                "MANAGE_CHANNELS"
+            ]
         });
     }
 
@@ -182,8 +188,21 @@ export default class Invite extends Command {
             });
 
             if(!data){
-                
+                return ErrorMessage(
+                    `An invalid embed code was sent!`,
+                    interaction,
+                    "blob_glitch"
+                ); 
             }
+
+            if(webhook.owner.id != client.user.id){
+                return ErrorMessage(
+                    `The webhook must be made by me!`,
+                    interaction,
+                    "blob_glitch"
+                );
+            }
+
             if(!channel.isText()){
                 return ErrorMessage(
                     `The channel must be a text channel!`,
