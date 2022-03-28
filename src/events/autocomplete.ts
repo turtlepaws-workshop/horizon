@@ -20,7 +20,7 @@ export default class InteractionAutocompleteEvent extends Event {
         }
 
         try {
-            await Command.autocomplete(interaction, client);
+            const val = await Command.autocomplete(interaction, client);
         } catch(e) {
             console.log(e);
         }

@@ -19,8 +19,8 @@ function Timestamp(time: Date|number, type: TimestampStylesString|"NONE"|"") {
     return `<t:${unixTime(time)}${endIsNull ? "" : ":"}${end}>`
 }
 
-async function ErrorMessage(message: string, int: Interaction, noEmojis: boolean = false){
-    if(!noEmojis) message = `${int.client.customEmojis.get("warning")} ${message}`
+async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glitch"|"blob_lurk"|"warning"|"blob_think" = "warning", noEmojis: boolean = false){
+    if(!noEmojis) message = `${int.client.customEmojis.get(emoji)} ${message}`
     const components = [
         {
             type: 1,

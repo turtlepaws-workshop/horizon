@@ -34,6 +34,7 @@ export default class InteractionCommandEvent extends Event {
             return ErrorMessage(
                 `The bots emojis are caching, please wait...`,
                 interaction,
+                "warning",
                 true
             )
         }

@@ -3,12 +3,14 @@ import { CommandInteraction, CacheType, Client, PermissionString } from "discord
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun } from "../../util/util";
 import Command from "../../lib/command";
+import SignalSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 
 export default class Invite extends Command {
     constructor(){
         super({
-            description: `See what permissions the bot is missing.`,
-            name: `permissions`,
+            commandBuilder: new SignalSlashCommandBuilder()
+            .setName("permissions")
+            .setDescription("See what permissions the bot is missing."),
             requiredPermissions: [],
             runPermissions: [],
             somePermissions: []

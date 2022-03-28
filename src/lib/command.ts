@@ -2,6 +2,7 @@ import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "@discordjs/
 import { ApplicationCommandAutocompleteOption, AutocompleteInteraction, Client, CommandInteraction, PermissionString } from "discord.js";
 import { CommandOptions } from "../typings";
 import SlashCommandOptionBuilder from "./optionBuilder";
+import SignalSlashCommandBuilder from "./SlashCommandBuilder";
 
 export default class Command {
     public name: string;
@@ -9,26 +10,25 @@ export default class Command {
     public requiredPermissions!: PermissionString[];
     public somePermissions!: PermissionString[];
     public runPermissions!: PermissionString[];
-    public builder!: SlashCommandBuilder;
+    public builder!: SignalSlashCommandBuilder;
     public dev: boolean = false;
 
-    constructor(options: CommandOptions, optionBuilder: SlashCommandOptionBuilder = new SlashCommandOptionBuilder()){
+    constructor(options: CommandOptions){
         //Set permissions
         this.requiredPermissions = options.requiredPermissions;
         this.runPermissions = options.runPermissions;
         this.somePermissions = options.somePermissions;
 
         //Set base data
-        this.name = options.name;
-        this.description = options.description;
+        const builder = options.commandBuilder.builder;
+        this.builder = options.commandBuilder;
+        this.name = builder.name;
+        this.description = builder.description;
         this.dev = options.dev;
-        
-        this.builder = optionBuilder.builder.setName(options.name)
-        .setDescription(options.description);
     }
 
     builderJSON(){
-        return this.builder.toJSON();
+        return this.builder.builder.toJSON();
     }
 
     async execute(
@@ -39,9 +39,7 @@ export default class Command {
     async autocomplete(
         interaction: AutocompleteInteraction,
         client: Client
-    ): Promise<string[]|ApplicationCommandAutocompleteOption[]> {
-        return [];
-    }
+    ): Promise<void> { }
 
     
 }

@@ -3,12 +3,14 @@ import { CommandInteraction, CacheType, Client, MessageButton } from "discord.js
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun } from "../../util/util";
 import Command from "../../lib/command";
+import SignalSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 
 export default class Invite extends Command {
     constructor(){
         super({
-            description: `View our github!`,
-            name: `github`,
+            commandBuilder: new SignalSlashCommandBuilder()
+            .setName("github")
+            .setDescription("View our github!"),
             requiredPermissions: [],
             runPermissions: [],
             somePermissions: []

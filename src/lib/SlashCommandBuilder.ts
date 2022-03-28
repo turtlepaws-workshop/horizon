@@ -1,13 +1,29 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from "@discordjs/builders";
 
-////////////////
-// DEPRECATED //
-////////////////
-export default class SlashCommandOptionBuilder {
+export default class SignalSlashCommandBuilder {
     public builder: SlashCommandBuilder;
 
     constructor(){
         this.builder = new SlashCommandBuilder();
+    }
+
+    toJSON(){
+        return this.builder.toJSON();
+    }
+    
+    setName(name: string){
+        this.builder.setName(name)
+        return this;
+    }
+
+    setDescription(description: string = "No description provided."){
+        this.builder.setDescription(description)
+        return this;
+    }
+
+    addSubcommand(fn: SlashCommandSubcommandBuilder | ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder)){
+        this.builder.addSubcommand(fn)
+        return this;
     }
 
     addStringOption(name: string, description: string, req: boolean = false, choices?: [name: string, value: string][]): this {

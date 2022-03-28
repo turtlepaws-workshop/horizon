@@ -5,6 +5,8 @@ import menus from "./client/menus";
 import { token } from "./config/secrets.json";
 import Command from "./lib/command";
 import { registerCommands } from "./lib/createCommands";
+import { init } from "discord-modals";
+import initDB from "./mongoDB";
 
 const client = new Client({
     intents: [
@@ -41,6 +43,12 @@ events(client);
 
 //init menus
 menus(client);
+
+//init modals
+init(client);
+
+//init mongo db
+initDB();
 
 //Wait for when the bot is ready
 client.on("ready", async () => {

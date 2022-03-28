@@ -4,12 +4,14 @@ import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, Timestamp } from "../../util/util";
 import Command from "../../lib/command";
 import SlashCommandOptionBuilder from "../../lib/optionBuilder";
+import SignalSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 
 export default class Invite extends Command {
     constructor(){
         super({
-            description: `Get info on the current server.`,
-            name: `serverinfo`,
+            commandBuilder: new SignalSlashCommandBuilder()
+            .setName("serverinfo")
+            .setDescription("Get info about the current server."),
             requiredPermissions: [],
             runPermissions: [],
             somePermissions: [],

@@ -1,24 +1,22 @@
-import { codeBlock, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "@discordjs/builders";
+import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction, CacheType, Client, MessageButton, GuildMember } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, Timestamp } from "../../util/util";
 import Command from "../../lib/command";
 import SlashCommandOptionBuilder from "../../lib/optionBuilder";
+import SignalSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 
 export default class Invite extends Command {
     constructor(){
         super({
-            description: `Get info on a user in this server.`,
-            name: `userinfo`,
+            commandBuilder: new SignalSlashCommandBuilder()
+            .setName("userinfo")
+            .setDescription("Get info on a specific user or you!")
+            .addUserOption("user", "The user you want info on."),
             requiredPermissions: [],
             runPermissions: [],
             somePermissions: [],
-        }, new SlashCommandOptionBuilder()
-            .addUserOption(
-                `user`,
-                `The user you want info on.`
-            )
-        );
+        });
     }
 
     async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
