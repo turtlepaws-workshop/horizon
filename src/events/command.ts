@@ -15,6 +15,13 @@ export default class InteractionCommandEvent extends Event {
         const Command = client.commands.all.find(e => e.name == interaction.commandName);
         if(!Command) return ErrorMessage(`Command not found...`, interaction);
 
+        if((Command.serverOnly || true) && interaction.channel.type == "DM"){
+            return ErrorMessage(
+                `This command can only be executed in a server!`,
+                interaction
+            );
+        }
+
         //@ts-ignore
         if(!(interaction.member.permissions.has(Command?.requiredPermissions ?? []) || interaction.member.permissions.some(Command?.somePermissions ?? []))){
             return ErrorMessage(

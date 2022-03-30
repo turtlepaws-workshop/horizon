@@ -52,6 +52,7 @@ export default class Invite extends Command {
     }
 
     async autocomplete(interaction: AutocompleteInteraction<CacheType>, client: Client<boolean>): Promise<void> {
+        //@ts-expect-error
         const data: EmbedModel[] = Array.from(await EmbedData.find({
             userId: interaction.user.id
         }));
@@ -183,6 +184,7 @@ export default class Invite extends Command {
             const customId = interaction.options.getString("customid");
             //@ts-ignore
             const channel: Channel = interaction.options.getChannel("channel") || interaction.channel;
+            //@ts-expect-error
             const data: EmbedModel = await EmbedData.findOne({
                 customId: customId
             });

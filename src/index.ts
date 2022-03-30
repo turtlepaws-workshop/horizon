@@ -7,6 +7,7 @@ import Command from "./lib/command";
 import { registerCommands } from "./lib/createCommands";
 import { init } from "discord-modals";
 import initDB from "./mongoDB";
+import initLevels from "./client/levels";
 
 const client = new Client({
     intents: [
@@ -17,13 +18,15 @@ const client = new Client({
         "GUILD_INTEGRATIONS",
         "GUILD_INVITES",
         "GUILD_MEMBERS",
-        "GUILD_SCHEDULED_EVENTS"
+        "GUILD_SCHEDULED_EVENTS",
+        "GUILD_MESSAGES"
     ],
     partials: [
         "CHANNEL",
         "GUILD_MEMBER",
         "GUILD_SCHEDULED_EVENT",
-        "USER"
+        "USER",
+        "MESSAGE"
     ]
 });
 
@@ -49,6 +52,9 @@ init(client);
 
 //init mongo db
 initDB();
+
+//init discord xp
+initLevels(client);
 
 //Wait for when the bot is ready
 client.on("ready", async () => {

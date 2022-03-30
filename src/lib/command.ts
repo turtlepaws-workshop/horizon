@@ -12,6 +12,7 @@ export default class Command {
     public runPermissions!: PermissionString[];
     public builder!: SignalSlashCommandBuilder;
     public dev: boolean = false;
+    public serverOnly: boolean = true;
 
     constructor(options: CommandOptions){
         //Set permissions
@@ -21,10 +22,11 @@ export default class Command {
 
         //Set base data
         const builder = options.commandBuilder.builder;
+        this.serverOnly = options.serverOnly || true;
         this.builder = options.commandBuilder;
         this.name = builder.name;
         this.description = builder.description;
-        this.dev = options.dev;
+        this.dev = options.dev || false;
     }
 
     builderJSON(){
