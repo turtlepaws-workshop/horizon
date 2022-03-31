@@ -7,6 +7,7 @@ import { EventEmitter } from "events";
 import { Rank } from "canvacord";
 import * as Canvas from "canvas";
 import { LbModel, LeaderboardsModel } from ".././models/leaderboards";
+import settings, { GuildSettingsModel } from ".././models/settings";
 
 //https://www.npmjs.com/package/discord-xp
 export default async function initLevels(client: Client) {
@@ -31,6 +32,60 @@ export async function addXP(member: GuildMember, xp: number) {
         user: newXpUser,
         leveledUp: false
     }
+}
+
+export async function replacePlaceholders(string: string, userId: string, guildId: string, dClient: Client){
+    const user = await XPLevels.fetch(userId, guildId);
+    const dUser = await dClient.users.fetch(userId);
+    const guild = await dClient.guilds.fetch(guildId);
+    const dMember = await guild.members.fetch(userId);
+    const nickname = dMember.nickname;
+
+    return string.replaceAll(`{{level}}`, user.level.toString())
+    .replaceAll(`{{cleanNextLevelXP}}`, user.cleanNextLevelXp.toString())
+    .replaceAll(`{{cleanXP}}`, user.cleanXp.toString())
+    .replaceAll(`{{XP}}`, user.xp.toString())
+    .replaceAll(`{{userMention}}`, dUser.toString())
+    .replaceAll(`{{userTag}}`, dUser.tag)
+    .replaceAll(`{{userName}}`, dUser.username)
+    .replaceAll(`{{userNickname}}`, nickname)
+    .replaceAll(`{{guild}}`, guild.toString());
+}
+
+export async function createSettings(guildId: string): Promise<GuildSettingsModel> {
+    const check_ = await settings.findOne({
+        guildId: guildId
+    });
+    //@ts-expect-error
+    if(check_ != null) return check_;
+
+    const defualtCreateParams: GuildSettingsModel = {
+        guildId: guildId,
+        automod: {
+            bannedWords: new Map(),
+            enabled: false
+        },
+        guild: {
+            modCommands: false
+        },
+        levels: {
+            cardBackgroundURL: null,
+            cardProgressBar: "#5865f2",
+            embed: false,
+            enabled: false,
+            message: "GG {{userMention}}. You leveled up to level {{level}}!",
+            messageChannel: null
+        }
+    };
+
+    //@ts-expect-error
+    return (await new settings(defualtCreateParams).save().catch(console.log));
+}
+
+export async function changeSettings(guildId: string, callback: (guildSettings: GuildSettingsModel, isNull: (val: unknown) => boolean) => Promise<void>){
+    const settings_ = await createSettings(guildId);
+
+    return callback(settings_, (val) => val == null);
 }
 
 export async function generateRankCard(member: GuildMember) {
