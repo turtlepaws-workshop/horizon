@@ -1,7 +1,8 @@
-import { CommandInteraction, Interaction, MessageButton } from "discord.js";
+import { CommandInteraction, GuildMember, Interaction, MessageButton, PermissionString } from "discord.js";
 import { SupportServer } from ".././config/config";
 import { calculatePermissionForRun } from "./permissions";
 import { TimestampStylesString } from "@discordjs/builders";
+import { APIInteractionGuildMember } from "discord-api-types";
 
 function unixTime(time: Date|number){
     const date = new Date(time);
@@ -56,9 +57,15 @@ async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glit
     }
 }
 
+function hasPermission(permission: PermissionString, member: GuildMember | APIInteractionGuildMember){
+    //@ts-expect-error
+    return member.permissions.has(permission);
+}
+
 export {
     calculatePermissionForRun,
     ErrorMessage,
     Timestamp,
-    unixTime
+    unixTime,
+    hasPermission
 }

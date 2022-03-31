@@ -22,6 +22,9 @@ export default class Invite extends Command {
         const guild = await interaction.guild.fetch();
         const channels = guild.channels.cache;
         const owner = await guild.fetchOwner();
+        function hasBanner(){
+            return guild.banner != null;
+        }
         
         await interaction.reply({
             embeds: new Embed()
@@ -40,7 +43,27 @@ export default class Invite extends Command {
                 text: guild.id,
                 iconURL: client.customEmojis.get("ID").URL
             })
-            .build()
+            .build(),
+            components: [
+                {
+                    type: 1,
+                    components: [
+                        new MessageButton()
+                        .setLabel(`Icon`)
+                        .setURL(guild.iconURL())
+                        .setStyle("LINK"),
+                        new MessageButton()
+                        .setLabel(`Banner${hasBanner() ? "" : " (Disabled)"}`)
+                        .setDisabled(!hasBanner())
+                        .setURL(hasBanner() ? guild.bannerURL() : "https://discord.com/404")
+                        .setStyle("LINK"),
+                        new MessageButton()
+                        .setLabel("Add birthday as event")
+                        .setCustomId("ADD_BIRTHDAY")
+                        .setStyle("SUCCESS")
+                    ]
+                }
+            ]
         });
     }
 }

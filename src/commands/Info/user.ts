@@ -39,6 +39,8 @@ export default class Invite extends Command {
             .addField(`${client.customEmojis.get("art")} Role Color`, `\`${user.displayHexColor}\``)
             .addField(`${client.customEmojis.get("secure")} Pending Verification`, `${user.pending ? "✅" : "❌"}`)
             .addField(`${client.customEmojis.get("role")} Roles`, `${user.roles.cache.map(e => `${e}`).join(" ")}`)
+            .addField(`${client.customEmojis.get("art")} Accent Color`, `\`${user.user.hexAccentColor || "None"}\``)
+            .addField(`${client.customEmojis.get("channel")} Tag`, `\`${user.user.tag}\``)
             .setThumbnail(user.displayAvatarURL())
             .setFooter({
                 text: `${user.id}`,
