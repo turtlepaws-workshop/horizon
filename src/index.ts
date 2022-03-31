@@ -8,6 +8,7 @@ import { registerCommands } from "./lib/createCommands";
 import { init } from "discord-modals";
 import initDB from "./mongoDB";
 import initLevels from "./client/levels";
+import initLeaderboards from "./client/leaderboards";
 
 const client = new Client({
     intents: [
@@ -71,6 +72,11 @@ client.on("ready", async () => {
         //Update client status
         client.customEmojisReady = true;
     }, 4000);
+    //for every 5s update all leaderboards
+    setInterval(async () => {
+        //init leaderboard editing
+        initLeaderboards(client);
+    });
 });
 
 //Login with our super secret token!
