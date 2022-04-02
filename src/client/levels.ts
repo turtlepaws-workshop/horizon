@@ -53,11 +53,12 @@ export async function replacePlaceholders(string: string, userId: string, guildI
 }
 
 export async function createSettings(guildId: string): Promise<GuildSettingsModel> {
-    const check_ = await settings.findOne({
+    const checking = await settings.findOne({
         guildId: guildId
     });
+
     //@ts-expect-error
-    if(check_ != null) return check_;
+    if(checking != null) return checking;
 
     const defualtCreateParams: GuildSettingsModel = {
         guildId: guildId,
@@ -78,8 +79,9 @@ export async function createSettings(guildId: string): Promise<GuildSettingsMode
         }
     };
 
+    const newSettings = await new settings(defualtCreateParams).save().catch(console.log);
     //@ts-expect-error
-    return (await new settings(defualtCreateParams).save().catch(console.log));
+    return newSettings;
 }
 
 export async function changeSettings(guildId: string, callback: (guildSettings: GuildSettingsModel, isNull: (val: unknown) => boolean) => Promise<void>){
