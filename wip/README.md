@@ -1,0 +1,2 @@
+# WIPS
+This folder is for **work in progress (WIP)** code that has too many errors to be added to the bot. After creating one don't forget to add `//@ts-no-check` so that when you build the code, it won't crash TS.
