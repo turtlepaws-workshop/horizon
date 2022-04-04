@@ -9,6 +9,7 @@ import { init } from "discord-modals";
 import initDB from "./mongoDB";
 import initLevels from "./client/levels";
 import initLeaderboards from "./client/leaderboards";
+import "reflect-metadata"
 
 const client = new Client({
     intents: [

@@ -9,7 +9,9 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "./dist/",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   },
   "exclude": [
     "node_modules",

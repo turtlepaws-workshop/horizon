@@ -8,6 +8,9 @@ import { Rank } from "canvacord";
 import * as Canvas from "canvas";
 import { LbModel, LeaderboardsModel } from ".././models/leaderboards";
 import settings, { GuildSettingsModel } from ".././models/settings";
+import { GuildSettings } from ".././entities/settings";
+import { AppDataSource } from ".././sqlite";
+import StringMap from ".././lib/stringmap";
 
 //https://www.npmjs.com/package/discord-xp
 export default async function initLevels(client: Client) {
@@ -52,15 +55,16 @@ export async function replacePlaceholders(string: string, userId: string, guildI
     .replaceAll(`{{guild}}`, guild.toString());
 }
 
-export async function createSettings(guildId: string): Promise<GuildSettingsModel> {
-    const checking = await settings.findOne({
+export async function createSettings(guildId: string) {
+    const SettingsRepo = await (await AppDataSource).getRepository("GuildSettings");
+
+    const checking = await SettingsRepo.findOneBy({ 
         guildId: guildId
     });
 
-    //@ts-expect-error
     if(checking != null) return checking;
 
-    const defualtCreateParams: GuildSettingsModel = {
+    const defualtCreateParams = {
         guildId: guildId,
         automod: {
             bannedWords: new Map(),
@@ -79,14 +83,34 @@ export async function createSettings(guildId: string): Promise<GuildSettingsMode
         }
     };
 
-    const newSettings = await new settings(defualtCreateParams).save().catch(console.log);
-    //@ts-expect-error
-    return newSettings;
+    const map = new StringMap();
+
+    //https://npm.im/typeorm
+    let newSettings = new GuildSettings();
+    newSettings = {
+        guildId,
+        automod_enabled: false,
+        automod_bannedWords: "",
+        guild_modCommands: false,
+        levels_cardBackgroundURL: null,
+        levels_cardProgressBar: "#5865f2",
+        levels_embed: false,
+        levels_message: "GG {{userMention}}. You leveled up to level {{level}}!",
+        levels_enabled: false,
+        levels_messageChannel: null
+    };
+
+    return await SettingsRepo.create(newSettings);
+}
+
+export function parseGuildData(){
+
 }
 
 export async function changeSettings(guildId: string, callback: (guildSettings: GuildSettingsModel, isNull: (val: unknown) => boolean) => Promise<void>){
     const settings_ = await createSettings(guildId);
 
+    //@ts-expect-error
     return callback(settings_, (val) => val == null);
 }
 

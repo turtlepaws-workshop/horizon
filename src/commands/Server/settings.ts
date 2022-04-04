@@ -12,6 +12,7 @@ import { website } from "../../config/config";
 import { APIApplicationCommandAutocompleteResponse, ButtonStyle } from "discord-api-types";
 import { createSettings } from "../../client/levels";
 import embed from "../../models/embed";
+import { parseStringMap } from "../../lib/stringmap";
 
 export default class Invite extends Command {
     constructor() {
@@ -119,24 +120,50 @@ export default class Invite extends Command {
             return val ? client.customEmojis.get("check_").toString() : client.customEmojis.get("xmark_").toString();
         }
         function embedValue(name: any, value: any, end?: boolean){
-            return `**${name.toString()}:** ${value.toString()}${!end ? "\n" : ""}`;
+            //No channel
+            if(value == "<#null>") value = "None";
+            //No value
+            if(value == "") value = "None";
+            return `**${name == null ? "None" : name.toString()}:** ${value == null ? "None" : value.toString()}${!end ? "\n" : ""}`;
         }
         function code(val: any){
             return `\`${val.toString()}\``
         }
+
         console.log("fetching server settings")
         const currentSettings = await createSettings(interaction.guild.id);
 
+        console.log(currentSettings)
         console.log("editing message")
         //@ts-expect-error
         const message: Message = await interaction.editReply({
             embeds: new Embed()
             .setTitle(`This server's settings`)
-            .addField(`${client.customEmojis.get("secure")} AutoModerator`, `**Enabled:** ${checkOrXMark(currentSettings.automod.enabled)}\n${Array.from(currentSettings.automod.bannedWords.values()).map(e => `\`${e}\``).join(", ")}`)
-            .addField(`${client.customEmojis.get("levels")} Levels`, `${embedValue("Enabled", checkOrXMark(currentSettings.levels.enabled))}${embedValue("Embed", checkOrXMark(currentSettings.levels.embed))}${embedValue("Custom Message", currentSettings.levels.message || "Default")}${embedValue("Message Channel", channelMention(currentSettings.levels.messageChannel))}${embedValue("Card Progress Bar Color", code(currentSettings.levels.cardProgressBar))}${embedValue("Card Background URL", currentSettings.levels.cardBackgroundURL, true)}`)
-            .addField(`${client.customEmojis.get("list")} Server Settings`, `${embedValue("Moderator Commands", currentSettings.guild.modCommands, true)}`)
+            //@ts-expect-error
+            .addField(`${client.customEmojis.get("secure")} AutoModerator`, `**Enabled:** ${checkOrXMark(currentSettings.automod_enabled)}\n${embedValue("Banned Words", Array.from(parseStringMap(currentSettings.automod_bannedWords)).map(e => `\`${e}\``).join(", "))}`)
+            //@ts-expect-error
+            .addField(`${client.customEmojis.get("levels")} Levels`, `${embedValue("Enabled", checkOrXMark(currentSettings.levels_enabled))}${embedValue("Embed", checkOrXMark(currentSettings.levels_embed))}${embedValue("Custom Message", currentSettings.levels_message || "Default")}${embedValue("Message Channel", channelMention(currentSettings.levels_messageChannel) || "None")}${embedValue("Card Progress Bar Color", code(currentSettings.levels_cardProgressBar))}${embedValue("Card Background URL", currentSettings.levels_cardBackgroundURL, true)}`)
+            //@ts-expect-error
+            .addField(`${client.customEmojis.get("list")} Server Settings`, `${embedValue("Moderator Commands", currentSettings.guild_modCommands, true)}`)
             .build(),
             components: [actionRows.main]
+        });
+
+        const collector = await message.createMessageComponentCollector({
+            filter: i => i.user.id==interaction.user.id
+        });
+
+        collector.on("collect", async i => {
+            if(i.customId == customIds.buttons.Guild){
+                //Ask if they want it enabled
+            } else if(i.customId == customIds.buttons.Levels){
+                //Ask if they want it enabled
+                //With cancel btn
+                //Show settings modal
+                //Go back
+            } else if(i.customId == customIds.buttons.Mod){
+                //Ask if they want it enabled
+            }
         });
     }
 }

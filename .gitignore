@@ -108,3 +108,6 @@ src/config/secrets.json
 
 # Package
 package-lock.json
+
+# SQLite
+database.sqlite
