@@ -1,13 +1,13 @@
-# Signal - A TS-built, open-source, multipurpose Discord bot.
+# Horizon - A TS-built, open-source, multipurpose Discord bot.
 
 ## Emoji guilds
-You can join these emoji guilds if you want to use the emojis from Signal. You can DM me (Turtlepaw#3806) to get your self-hosted (or other) bot added.
+You can join these emoji guilds if you want to use the emojis from Horizon. You can DM me (Turtlepaw#3806) to get your self-hosted (or other) bot added.
 
 - https://discord.gg/7evbFRBHjz
 - https://discord.gg/ksNFnpqRNW
 
 ## Invite Link
-If you don't want to self-host this bot you can add our hosted one! [Add to server (this is an auto-generated invite created by the bot with all the permissions needed to run each command)](https://discord.com/oauth2/authorize?client_id=956747231615152188&permissions=1521157008391&scope=bot%20applications.commands)
+[Add to server](https://discord.com/oauth2/authorize?client_id=956747231615152188&permissions=1521157008391&scope=bot%20applications.commands)
 
 ## Support Server
 You can join my hub for all my bots [here](https://discord.gg/9N8BkWzuBK). For the original bot or support on an error **in the original code**
