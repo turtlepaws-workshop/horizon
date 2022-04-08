@@ -2,7 +2,7 @@ import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { CustomEmbed } from "./entities/embed"
 import { Leaderboards } from "./entities/leaderboards"
-import { UserMessages } from "./entities/messages"
+import { User } from "./entities/user"
 import { GuildSettings } from "./entities/settings"
 
 export const AppDataSource = new DataSource({
@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource({
     database: "database.sqlite",
     synchronize: true,
     logging: false,
-    entities: [CustomEmbed, Leaderboards, UserMessages, GuildSettings],
+    entities: [CustomEmbed, Leaderboards, User, GuildSettings],
     migrations: [],
     subscribers: [],
 }).initialize();

@@ -24,9 +24,9 @@ Discord.js | v13 (soon v14) | [discord.js.org](https://discord.js.org)
 ### Steps
 Step | Step Value | Code
 --- | --- | ---
-1 | Clone the repo | `git clone https://github.com/Turtlepaw/Signal.git`
-2 | Install all modules | `npm install`
-3 | Install typescript | `npm install -g typescript`
-4 | Create a file called `secrets.json` and edit it | [Example](https://github.com/Turtlepaw/signal/blob/main/src/config/secrets.example.json)
+1 | Clone the repo | `git clone https://github.com/turtlepaws-workshop/horizon.git`
+2 | Install typescript | `npm install -g typescript`
+3 | Install all modules | `npm install`
+4 | Create a file called `secrets.json` in `src/config` (full URL: `./src/config/secrets.json`) and edit it | [Example](https://github.com/Turtlepaw/signal/blob/main/src/config/secrets.example.json)
 5 | Optionally, you can edit the [config.js file](https://github.com/Turtlepaw/signal/blob/main/src/config/config.js)
-6 | Run the code ✨ | `npm run buildAndRun` or in vscode <kbd>F5</kbd> + <kbd>Run Dist & TS</kbd>
+6 | Run the code ✨ | `npm run buildAndRun` or in vscode <kbd>F5</kbd> -> <kbd>Run Dist & TS</kbd>
