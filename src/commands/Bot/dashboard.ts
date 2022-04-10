@@ -27,7 +27,7 @@ export default class Invite extends Command {
                     type: 1,
                     components: [
                         new MessageButton()
-                        .setLabel(`Dashboard`)
+                        .setLabel(`Go to your dashboard`)
                         .setURL(generateDashboardURL(interaction.guild.id))
                         .setStyle("LINK")
                     ]
