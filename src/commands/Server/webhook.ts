@@ -3,7 +3,7 @@ import { CommandInteraction, CacheType, Client, MessageButton, MessageEmbed, App
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
-import SignalSlashCommandBuilder from "../../lib/SlashCommandBuilder";
+import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 import { Modal, showModal, TextInputComponent } from "discord-modals";
 import { v4 } from "uuid";
 import EmbedData from "../../models/embed";
@@ -14,7 +14,7 @@ import { APIApplicationCommandAutocompleteResponse } from "discord-api-types";
 export default class Invite extends Command {
     constructor() {
         super({
-            commandBuilder: new SignalSlashCommandBuilder()
+            commandBuilder: new HorizonSlashCommandBuilder()
                 .setName("webhook")
                 .setDescription("Create a webhook in the current channel."),
             requiredPermissions: [

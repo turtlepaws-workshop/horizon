@@ -2,7 +2,7 @@ import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "@discordjs/
 import { ApplicationCommandAutocompleteOption, AutocompleteInteraction, Client, CommandInteraction, PermissionString } from "discord.js";
 import { CommandOptions } from "../typings";
 import SlashCommandOptionBuilder from "./optionBuilder";
-import SignalSlashCommandBuilder from "./SlashCommandBuilder";
+import HorizonSlashCommandBuilder from "./SlashCommandBuilder";
 
 export default class Command {
     public name: string;
@@ -10,7 +10,7 @@ export default class Command {
     public requiredPermissions!: PermissionString[];
     public somePermissions!: PermissionString[];
     public runPermissions!: PermissionString[];
-    public builder!: SignalSlashCommandBuilder;
+    public builder!: HorizonSlashCommandBuilder;
     public dev: boolean = false;
     public serverOnly: boolean = true;
 

@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from "@discordjs/builders";
 
-export default class SignalSlashCommandBuilder {
+export default class HorizonSlashCommandBuilder {
     public builder: SlashCommandBuilder;
 
     constructor(){

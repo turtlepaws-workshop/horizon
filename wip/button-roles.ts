@@ -4,13 +4,13 @@ import { CommandInteraction, CacheType, Client, MessageButton, MessageActionRow,
 import { Embed } from "../src/util/embed";
 import { calculatePermissionForRun, ErrorMessage } from "../src/util/util";
 import Command from "../src/lib/command";
-import SignalSlashCommandBuilder from "../src/lib/SlashCommandBuilder";
+import HorizonSlashCommandBuilder from "../src/lib/SlashCommandBuilder";
 import { Color } from "../src/config/config";
 
 export default class Invite extends Command {
     constructor() {
         super({
-            commandBuilder: new SignalSlashCommandBuilder()
+            commandBuilder: new HorizonSlashCommandBuilder()
                 .setName("button-roles")
                 .setDescription("Create button roles!"),
             requiredPermissions: [],

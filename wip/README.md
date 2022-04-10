@@ -1,2 +1,2 @@
 # WIPS
-This folder is for **work in progress (WIP)** code that has too many errors to be added to the bot. After creating one don't forget to add `//@ts-no-check` so that when you build the code, it won't crash TS. Once you're done with a WIP, you can move it to the [`/src/commands`](https://github.com/Turtlepaw/signal/tree/main/src/commands) folder.
+This folder is for **work in progress (WIP)** code that has too many errors to be added to the bot. After creating one don't forget to add `//@ts-no-check` so that when you build the code, it won't crash TS. Once you're done with a WIP, you can move it to the [`/src/commands`](https://github.com/turtlepaws-workshop/horizon/tree/main/src/commands) folder.

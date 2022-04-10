@@ -3,18 +3,19 @@ import { CommandInteraction, CacheType, Client, MessageButton } from "discord.js
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun } from "../../util/util";
 import Command from "../../lib/command";
-import SignalSlashCommandBuilder from "../../lib/SlashCommandBuilder";
+import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 import { generateDashboardURL, website } from "../../config/config";
 
 export default class Invite extends Command {
     constructor(){
         super({
-            commandBuilder: new SignalSlashCommandBuilder()
+            commandBuilder: new HorizonSlashCommandBuilder()
             .setName("dashboard")
             .setDescription("Get a link to your dashboard."),
             requiredPermissions: [],
             runPermissions: [],
-            somePermissions: []
+            somePermissions: [],
+            dev: true
         });
     }
 

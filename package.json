@@ -1,5 +1,5 @@
 {
-  "name": "signal",
+  "name": "horizon",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Turtlepaw/signal.git"
+    "url": "git+https://github.com/turtlepaws-workshop/horizon.git"
   },
   "author": "Turtlepaw",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Turtlepaw/signal/issues"
+    "url": "https://github.com/turtlepaws-workshop/horizon/issues"
   },
-  "homepage": "https://github.com/Turtlepaw/signal#readme",
+  "homepage": "https://github.com/turtlepaws-workshop/horizon#readme",
   "devDependencies": {
     "@types/node": "^17.0.21",
     "nodemon": "^2.0.15",
