@@ -1,4 +1,4 @@
-import { Client, Guild, GuildMember, Message, MessageAttachment, User } from "discord.js";
+import { Channel, Client, Guild, GuildMember, HexColorString, Message, MessageAttachment, MessageEmbed, User } from "discord.js";
 import XPLevels from "discord-xp-typescript";
 import { mongoDB } from "../config/secrets.json";
 import { MessageModel, Model } from ".././models/messages";
@@ -10,7 +10,9 @@ import { LbModel, LeaderboardsModel } from ".././models/leaderboards";
 import settings, { GuildSettingsModel } from ".././models/settings";
 import { GuildSettings } from ".././entities/settings";
 import { AppDataSource } from ".././sqlite";
-import StringMap from ".././lib/stringmap";
+import StringMap, { parseStringMap } from ".././lib/stringmap";
+import StringSet, { parseStringSet } from ".././lib/StringSet";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 //https://www.npmjs.com/package/discord-xp
 export default async function initLevels(client: Client) {
@@ -55,13 +57,14 @@ export async function replacePlaceholders(string: string, userId: string, guildI
     .replaceAll(`{{guild}}`, guild.toString());
 }
 
-export async function createSettings(guildId: string) {
+export async function createSettings(guildId: string): Promise<GuildSettings> {
     const SettingsRepo = await (await AppDataSource).getRepository("GuildSettings");
 
     const checking = await SettingsRepo.findOneBy({ 
         guildId: guildId
     });
 
+    //@ts-expect-error
     if(checking != null) return checking;
 
     const defualtCreateParams = {
@@ -91,6 +94,7 @@ export async function createSettings(guildId: string) {
         guildId,
         automod_enabled: false,
         automod_bannedWords: "",
+        automod_filters: "",
         guild_modCommands: false,
         levels_cardBackgroundURL: null,
         levels_cardProgressBar: "#5865f2",
@@ -100,18 +104,67 @@ export async function createSettings(guildId: string) {
         levels_messageChannel: null
     };
 
-    return await SettingsRepo.create(newSettings);
-}
+    await SettingsRepo.save(newSettings);
 
-export function parseGuildData(){
-
-}
-
-export async function changeSettings(guildId: string, callback: (guildSettings: GuildSettingsModel, isNull: (val: unknown) => boolean) => Promise<void>){
-    const settings_ = await createSettings(guildId);
+    const newCheck = await SettingsRepo.findOneBy({ 
+        guildId: guildId
+    });
 
     //@ts-expect-error
-    return callback(settings_, (val) => val == null);
+    return newCheck;
+}
+
+export interface ParsedGuildSettings {
+    guildId: string;
+    levels_enabled: boolean;
+    levels_messageChannel: string | null | Channel;
+    levels_message: string;
+    levels_embed: boolean;
+    levels_cardBackgroundURL: string;
+    levels_cardProgressBar: HexColorString;
+    automod_enabled: boolean;
+    automod_bannedWords: StringMap<string, string>;
+    //@ts-expect-error
+    automod_filters: StringSet<string>;
+    guild_modCommands: boolean;
+    guild?: Guild;
+}
+
+export function parseGuildData(data: GuildSettings, client?: Client): ParsedGuildSettings {
+    const guild = client != null ? client.guilds.cache.get(data.guildId) : null;
+    const levels_messageChannel = client != null ? guild.channels.cache.get(data.levels_messageChannel) : null;
+    return {
+        //@ts-expect-error
+        automod_bannedWords: parseStringMap(data.automod_bannedWords, "STRING_MAP"),
+        automod_enabled: data.automod_enabled,
+        automod_filters: parseStringSet(data.automod_filters, "STRING_SET"),
+        guildId: data.guildId,
+        guild_modCommands: data.guild_modCommands,
+        levels_cardBackgroundURL: data.levels_cardBackgroundURL,
+        levels_cardProgressBar: data.levels_cardProgressBar,
+        levels_embed: data.levels_embed,
+        levels_enabled: data.levels_enabled,
+        levels_message: data.levels_message,
+        levels_messageChannel: client != null ? levels_messageChannel : data.levels_messageChannel,
+        guild
+    }
+}
+
+export async function changeSettings(guildId: string, callback: (guildSettings: GuildSettings, settingsRepository: Repository<GuildSettings>, genFilter: () => FindOptionsWhere<GuildSettings>, isNull: (val: unknown, defaultValue?: unknown) => typeof val | typeof defaultValue) => Promise<void>, client?: Client){
+    const SettingsRepo = (await AppDataSource).getRepository("GuildSettings");
+    const settings_ = await createSettings(guildId);
+    const parsed = parseGuildData(settings_, client);
+
+    //@ts-expect-error
+    return callback(settings_, SettingsRepo, () => ({
+        guildId
+    }), (val, defaultValue) => {
+        if(defaultValue){
+            return (val == null ? defaultValue : val);
+        } else {
+            return val == null;
+        }
+    });
 }
 
 export async function generateRankCard(member: GuildMember) {

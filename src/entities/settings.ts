@@ -32,6 +32,8 @@ export class GuildSettings {
     automod_enabled: boolean
     @Column()
     automod_bannedWords: string
+    @Column()
+    automod_filters: string
 
     ///////////////////////
     //BASE GUILD SETTINGS//

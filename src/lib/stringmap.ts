@@ -51,12 +51,21 @@ export default class StringMap<K, V> {
   }
 }
 
-export function parseStringMap(str: string) {
+export function parseStringMap(str: string, res: "STRING_MAP" | "MAP") {
   if(str.length <= 0) return new Map();
   const json = JSON.parse(str);
-  const map = new Map<string, string>();
-  for (const key of Object.keys(json)) {
-    map.set(key, json[key]);
+  if(res == "MAP") {
+    const map = new Map<string, string>();
+    for (const key of Object.keys(json)) {
+      map.set(key, json[key]);
+    }
+    return map;
+  } else if(res == "STRING_MAP"){
+    const map = new StringMap<string, string>();
+    for (const key of Object.keys(json)) {
+      map.set(key, json[key]);
+    }
+
+    return  map;
   }
-  return map;
 }
