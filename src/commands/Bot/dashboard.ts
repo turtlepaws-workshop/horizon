@@ -4,6 +4,7 @@ import { Embed } from "../../util/embed";
 import { calculatePermissionForRun } from "../../util/util";
 import Command from "../../lib/command";
 import SignalSlashCommandBuilder from "../../lib/SlashCommandBuilder";
+import { generateDashboardURL, website } from "../../config/config";
 
 export default class Invite extends Command {
     constructor(){
@@ -26,7 +27,7 @@ export default class Invite extends Command {
                     components: [
                         new MessageButton()
                         .setLabel(`Dashboard`)
-                        .setURL(`https://horizon.trtle.xyz/guilds/${interaction.guild.id}`)
+                        .setURL(generateDashboardURL(interaction.guild.id))
                         .setStyle("LINK")
                     ]
                 }

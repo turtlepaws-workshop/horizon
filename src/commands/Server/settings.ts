@@ -139,12 +139,9 @@ export default class Invite extends Command {
         const message: Message = await interaction.editReply({
             embeds: new Embed()
             .setTitle(`This server's settings`)
-            //@ts-expect-error
-            .addField(`${client.customEmojis.get("secure")} AutoModerator`, `**Enabled:** ${checkOrXMark(currentSettings.automod_enabled)}\n${embedValue("Banned Words", Array.from(parseStringMap(currentSettings.automod_bannedWords)).map(e => `\`${e}\``).join(", "))}`)
-            //@ts-expect-error
-            .addField(`${client.customEmojis.get("levels")} Levels`, `${embedValue("Enabled", checkOrXMark(currentSettings.levels_enabled))}${embedValue("Embed", checkOrXMark(currentSettings.levels_embed))}${embedValue("Custom Message", currentSettings.levels_message || "Default")}${embedValue("Message Channel", channelMention(currentSettings.levels_messageChannel) || "None")}${embedValue("Card Progress Bar Color", code(currentSettings.levels_cardProgressBar))}${embedValue("Card Background URL", currentSettings.levels_cardBackgroundURL, true)}`)
-            //@ts-expect-error
-            .addField(`${client.customEmojis.get("list")} Server Settings`, `${embedValue("Moderator Commands", currentSettings.guild_modCommands, true)}`)
+            //.addField(`${client.customEmojis.get("secure")} AutoModerator`, `**Enabled:** ${checkOrXMark(currentSettings.automod_enabled)}\n${embedValue("Banned Words", Array.from(parseStringMap(currentSettings.automod_bannedWords)).map(e => `\`${e}\``).join(", "))}`)
+            //.addField(`${client.customEmojis.get("levels")} Levels`, `${embedValue("Enabled", checkOrXMark(currentSettings.levels_enabled))}${embedValue("Embed", checkOrXMark(currentSettings.levels_embed))}${embedValue("Custom Message", currentSettings.levels_message || "Default")}${embedValue("Message Channel", channelMention(currentSettings.levels_messageChannel) || "None")}${embedValue("Card Progress Bar Color", code(currentSettings.levels_cardProgressBar))}${embedValue("Card Background URL", currentSettings.levels_cardBackgroundURL, true)}`)
+            //.addField(`${client.customEmojis.get("list")} Server Settings`, `${embedValue("Moderator Commands", currentSettings.guild_modCommands, true)}`)
             .build(),
             components: [actionRows.main]
         });
