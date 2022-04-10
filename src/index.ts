@@ -10,6 +10,7 @@ import initDB from "./mongoDB";
 import initLevels from "./client/levels";
 import initLeaderboards from "./client/leaderboards";
 import "reflect-metadata"
+import { initExpress } from "./api";
 
 const client = new Client({
     intents: [
@@ -72,6 +73,9 @@ client.on("ready", async () => {
         console.log(`[CLIENT] Emojis ready`)
         //Update client status
         client.customEmojisReady = true;
+        //init api
+        //only needed if you have the dashboard
+        await initExpress(client)
     }, 4000);
     //for every 5s update all leaderboards
     setInterval(async () => {

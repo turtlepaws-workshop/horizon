@@ -3,7 +3,7 @@ import { Routes } from "discord-api-types/v9";
 import { token, clientId } from "../config/secrets.json";
 import { TestGuild } from "../config/config";
 import { ApplicationCommand, Client } from "discord.js";
-import * as klawSync from "klaw-sync";
+import klawSync from "klaw-sync";
 
 export async function registerCommands(client: Client) {
     const rest = new REST({ version: '9' }).setToken(token);

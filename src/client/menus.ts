@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import * as klawSync from "klaw-sync";
+import klawSync from "klaw-sync";
 import { basename } from "path";
 
 export default function(client: Client) {
