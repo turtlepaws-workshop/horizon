@@ -14,8 +14,7 @@ export default class Invite extends Command {
             .setDescription("Get a link to your dashboard."),
             requiredPermissions: [],
             runPermissions: [],
-            somePermissions: [],
-            dev: true
+            somePermissions: []
         });
     }
 
