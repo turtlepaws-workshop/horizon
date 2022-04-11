@@ -66,6 +66,12 @@ export async function initExpress(client: Client){
         }
     });
 
+    app.get("/settings/cache", async (req, res) =>  {
+        res.json({
+            ...client.settingsCache.toJSON()
+        });
+    });
+
     app.get("/settings/guild", async (req, res) => {
         //@ts-expect-error
         const modCommands: boolean = req.query.modCommands;

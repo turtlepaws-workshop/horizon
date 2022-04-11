@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import { TestGuild } from ".././config/config";
+import { TestGuild } from "../config/config";
 
 export default async function(client: Client){
     for(const emoji of client.emojis.cache.values()){

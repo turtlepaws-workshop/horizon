@@ -1,5 +1,5 @@
 import { CommandInteraction, GuildMember, Interaction, MessageButton, PermissionString } from "discord.js";
-import { SupportServer } from ".././config/config";
+import { SupportServer } from "../config/config";
 import { calculatePermissionForRun } from "./permissions";
 import { TimestampStylesString } from "@discordjs/builders";
 import { APIInteractionGuildMember } from "discord-api-types";

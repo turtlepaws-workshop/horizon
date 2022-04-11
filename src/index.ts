@@ -11,6 +11,7 @@ import initLevels from "./client/levels";
 import initLeaderboards from "./client/leaderboards";
 import "reflect-metadata"
 import { initExpress } from "./api";
+import { GuildSettingsCache } from "./client/settings";
 
 const client = new Client({
     intents: [
@@ -82,6 +83,7 @@ client.on("ready", async () => {
         //init leaderboard editing
         initLeaderboards(client);
     });
+    client.settingsCache = await new GuildSettingsCache(client).init();
 });
 
 //Login with our super secret token!
