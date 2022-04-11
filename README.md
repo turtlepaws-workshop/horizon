@@ -30,3 +30,13 @@ Step | Step Value | Code
 4 | Create a file called `secrets.json` in `src/config` (full URL: `./src/config/secrets.json`) and edit it | [Example](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/secrets.example.json)
 5 | Optionally, you can edit the [config.js file](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/config.js)
 6 | Run the code ✨ | `npm run buildAndRun` or in vscode <kbd>F5</kbd> -> <kbd>Run Dist & TS</kbd>
+
+### Config
+You can edit the config values in [`secrets.example.json`](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/secrets.example.json)
+Key | Value | From | Required
+--- | --- | --- | ---
+`token` | Your bot's token | You can get this from [Discord's Developer Portal](https://discord.com/developers/applications) | true
+`clientId` | Your bot's clientId | You can get this from [Discord's Developer Portal](https://discord.com/developers/applications) | true
+`API_TOKEN` | Your API token for the [dashboard](https://github.com/turtlepaw/horizon-dashboard) | You can generate one from [passwordsgenerator.net](https://passwordsgenerator.net/) | If you have the dashboard enabled
+
+There are also [optional](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/config.ts) config settings for your bot.

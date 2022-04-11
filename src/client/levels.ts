@@ -1,11 +1,12 @@
 import { Channel, Client, Guild, GuildMember, HexColorString, Message, MessageAttachment, MessageEmbed, User } from "discord.js";
-import XPLevels from "discord-xp-typescript";
-import { mongoDB } from "../config/secrets.json";
+import TypeormDiscordXp from "discord-xp-typeorm";
+const XPLevels = new TypeormDiscordXp();
 import { MessageModel, Model } from ".././models/messages";
 export const defaultMessageLevel = 50;
 import { EventEmitter } from "events";
 import { Rank } from "canvacord";
 import * as Canvas from "canvas";
+import { Leaderboards } from "../entities/leaderboards";
 import { LbModel, LeaderboardsModel } from ".././models/leaderboards";
 import settings, { GuildSettingsModel } from ".././models/settings";
 import { GuildSettings } from ".././entities/settings";
@@ -13,10 +14,11 @@ import { AppDataSource } from ".././sqlite";
 import StringMap, { parseStringMap } from ".././lib/stringmap";
 import StringSet, { parseStringSet } from ".././lib/StringSet";
 import { FindOptionsWhere, Repository } from "typeorm";
+import { User as UserEntity } from "../entities/user";
 
 //https://www.npmjs.com/package/discord-xp
 export default async function initLevels(client: Client) {
-    XPLevels.setURL(mongoDB);
+    XPLevels.setURL((await AppDataSource));
 }
 
 //xp: the xp to add
@@ -125,7 +127,7 @@ export interface ParsedGuildSettings {
     automod_enabled: boolean;
     automod_bannedWords: StringMap<string, string>;
     //@ts-expect-error
-    automod_filters: StringSet<string>;
+    automod_filters: StringSet<"LINK"|"BAD_WORD"|"DISCORD_INVITE"|"REDIRECT">;
     guild_modCommands: boolean;
     guild?: Guild;
 }
@@ -253,7 +255,7 @@ export async function generateLeaderboard(guild: Guild){
         const posData = poses[pos];
 
         //Paint their nickname, username, or no name
-        const availbleUsername = dMember != null ? (dMember?.nickname || user?.username) : "Unknown user";
+        const availbleUsername = dMember != null ? (dMember?.nickname || dUser?.username) : "Unknown user";
 
         //Add their username or nickname
         context.font = applyText(canvas, `${availbleUsername}`);
@@ -294,21 +296,26 @@ export async function removeXP(member: GuildMember, xp: number) {
 
 //adds a message to the user & xp
 export async function addMessage(member: GuildMember) {
-    //@ts-expect-error
-    let find: MessageModel = await Model.findOne({
+    const MessageRepository = (await AppDataSource).getRepository(UserEntity);
+
+    let find = await MessageRepository.findOneBy({
         userId: member.id
     });
 
     if (!find) {
         //@ts-expect-error
-        find = await new Model({
+        find = await MessageRepository.save({
             userId: member.id,
             messages: 0
-        }).save().catch(console.log);
+        }).catch(console.log);
     }
 
-    find.messages += 1;
-    await find.save().catch(console.log);
+    MessageRepository.update({
+        userId: member.id,
+    }, {
+        messages: find.messages + 1
+    }).catch(console.log);
+
     const xp = await addXP(member, defaultMessageLevel);
 
     return {
@@ -318,11 +325,12 @@ export async function addMessage(member: GuildMember) {
 }
 
 export async function addLeaderboardMessage(message: Message){
-    //@ts-expect-error
-    const lbMessage: LeaderboardsModel = await new LbModel({
+    const LeaderboardRepository = (await AppDataSource).getRepository(Leaderboards);
+
+    const lbMessage = await LeaderboardRepository.save({
         messageId: message.id,
         guildId: message.guild.id
-    }).save().catch(console.log);
+    }).catch(console.log);
 
     return lbMessage;
 }

@@ -2,9 +2,35 @@ import { Client, Guild } from "discord.js";
 import express from "express";
 import { changeSettings } from "../client/levels";
 import { GuildSettings } from "../entities/settings";
+import { API_TOKEN } from "../config/secrets.json"
 
 export async function initExpress(client: Client){
+    if(!API_TOKEN){
+        console.warn(
+            "There is no API_TOKEN. This might be because you have the dashboard disabled or if you have the dashboard enabled please specify an API_TOKEN or anyone will be able to access the API."
+        );
+    }
+
     const app = express();
+
+    app.use(async (req, res) => {
+        if(req.headers.authorization != API_TOKEN) return res.json({
+            error: true,
+            message: "Invalid authorization token"
+        });
+        if(!client.isReady()){
+            return res.json({
+                error: true,
+                message: "Client is not ready"
+            });
+        }
+        if(!client.customEmojisReady){
+            return res.json({
+                error: true,
+                message: "Emojis & other stuff are still caching, please wait..."
+            });
+        }
+    });
 
     app.get("/guilds", async (req, res) => {
         if(!client.isReady()){

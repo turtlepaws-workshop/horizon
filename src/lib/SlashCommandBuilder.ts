@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
 
 export default class HorizonSlashCommandBuilder {
     public builder: SlashCommandBuilder;
@@ -23,6 +23,11 @@ export default class HorizonSlashCommandBuilder {
 
     addSubcommand(fn: SlashCommandSubcommandBuilder | ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder)){
         this.builder.addSubcommand(fn)
+        return this;
+    }
+
+    addSubcommandGroup(input: SlashCommandSubcommandGroupBuilder | ((subcommandGroup: SlashCommandSubcommandGroupBuilder) => SlashCommandSubcommandGroupBuilder)){
+        this.builder.addSubcommandGroup(input)
         return this;
     }
 

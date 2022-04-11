@@ -8,8 +8,15 @@ import { Modal, showModal, TextInputComponent } from "discord-modals";
 import { v4 } from "uuid";
 import EmbedData from "../../models/embed";
 import { EmbedModel } from "../../typings/index";
+import { CustomEmbed } from "../../entities/embed"
 import { website } from "../../config/config";
 import { APIApplicationCommandAutocompleteResponse } from "discord-api-types";
+import { AppDataSource } from "../../sqlite";
+import { parseEmbed } from "src/client/parse";
+
+async function fetchRepository() {
+    return (await AppDataSource).getRepository(CustomEmbed);    
+}
 
 export default class Invite extends Command {
     constructor() {
@@ -52,21 +59,24 @@ export default class Invite extends Command {
     }
 
     async autocomplete(interaction: AutocompleteInteraction<CacheType>, client: Client<boolean>): Promise<void> {
-        //@ts-expect-error
-        const data: EmbedModel[] = Array.from(await EmbedData.find({
+        const repository = await fetchRepository();
+
+        const data = Array.from(await repository.findBy({
             userId: interaction.user.id
         }));
-        const focus = interaction.options.getFocused().toString();
 
+        const focus = interaction.options.getFocused().toString();
         const respond: ApplicationCommandOptionChoice[] = [];
 
         for(const embed of data.filter(embed => {
-            const point = (embed.data.title || embed.data.author.name || embed.data.footer.text || "No data to provide.");
+            const ebd = parseEmbed(embed);
+            const point = (ebd.title || ebd.author.name || ebd.footer.text || embed.customId);
             
-            return (point.startsWith(focus) || point.endsWith(focus))
+            return (point.startsWith(focus) || point.endsWith(focus));
         })){
+            const ebd = parseEmbed(embed);
             respond.push({
-                name: (embed.data.title || embed.data.author.name || embed.data.footer.text || "No data to provide.") + ` (${embed.customId})`,
+                name: (ebd.title || ebd.author.name || ebd.footer.text || "No data to provide.") + ` (${embed.customId})`,
                 value: embed.customId
             });
         }
@@ -76,6 +86,7 @@ export default class Invite extends Command {
 
     async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
         const subcommand = interaction.options.getSubcommand();
+        const repo = await fetchRepository();
 
         if(subcommand == "create"){
             const modalCustomId = v4() + "modal";
@@ -143,8 +154,8 @@ export default class Invite extends Command {
     
             client.on("modalSubmit", async m => {
                 if(m.customId != modalCustomId) return;
-    
-                const data: EmbedModel = {
+
+                const data = {
                     customId: v4(),
                     data: new MessageEmbed()
                         .setColor("BLURPLE")
@@ -165,7 +176,7 @@ export default class Invite extends Command {
                     userId: interaction.user.id
                 }
     
-                await new EmbedData(data).save().catch(console.log)
+                await repo.save(data);
     
                 await m.reply({
                     embeds: [
@@ -175,7 +186,7 @@ export default class Invite extends Command {
                             .addField(`${client.customEmojis.get("channel")} Custom Id`, `\`${data.customId}\``),
                         data.data
                     ]
-                })
+                });
             });
         } else if(subcommand == "send"){
             const webhookURL = interaction.options.getString("webhookurl");
@@ -184,8 +195,7 @@ export default class Invite extends Command {
             const customId = interaction.options.getString("customid");
             //@ts-ignore
             const channel: Channel = interaction.options.getChannel("channel") || interaction.channel;
-            //@ts-expect-error
-            const data: EmbedModel = await EmbedData.findOne({
+            const data = await repo.findOneBy({
                 customId: customId
             });
 
@@ -215,7 +225,7 @@ export default class Invite extends Command {
             
             const payload = {
                 embeds: [
-                    data.data
+                    parseEmbed(data)
                 ]
             };
 

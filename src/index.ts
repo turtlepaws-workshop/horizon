@@ -6,7 +6,6 @@ import { token } from "./config/secrets.json";
 import Command from "./lib/command";
 import { registerCommands } from "./lib/createCommands";
 import { init } from "discord-modals";
-import initDB from "./mongoDB";
 import initLevels from "./client/levels";
 import initLeaderboards from "./client/leaderboards";
 import "reflect-metadata"
@@ -55,7 +54,8 @@ menus(client);
 init(client);
 
 //init mongo db
-initDB();
+//[DEPRECATED] Now using sqlite instead
+//initDB();
 
 //init discord xp
 initLevels(client);

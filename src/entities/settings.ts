@@ -33,7 +33,7 @@ export class GuildSettings {
     @Column()
     automod_bannedWords: string
     @Column()
-    automod_filters: string
+    automod_filters: string //StringMap<>
 
     ///////////////////////
     //BASE GUILD SETTINGS//
