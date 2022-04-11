@@ -3,8 +3,16 @@ import express from "express";
 import { changeSettings } from "../client/levels";
 import { GuildSettings } from "../entities/settings";
 import { API_TOKEN } from "../config/secrets.json"
+import { CustomEmbed } from "../entities/embed";
+import { AppDataSource } from "../sqlite";
+
+export async function fetchRepository(){
+    return (await AppDataSource).getRepository(CustomEmbed)
+}
 
 export async function initExpress(client: Client){
+    const embedRepository = await fetchRepository();
+
     if(!API_TOKEN){
         console.warn(
             "There is no API_TOKEN. This might be because you have the dashboard disabled or if you have the dashboard enabled please specify an API_TOKEN or anyone will be able to access the API."
@@ -109,6 +117,36 @@ export async function initExpress(client: Client){
                 //@ts-expect-error
                 guild_modCommands: isNull(modCommands, settings.guild_modCommands)
             });
+        });
+    });
+
+    app.get("/embeds/fetch", async (req, res) => {
+        const fetch = await embedRepository.find();
+
+        res.json({
+            ...fetch
+        });
+    });
+
+    app.get("/embeds/:id", async (req, res) => {
+        const id = req.params.id;
+        const fetch = await embedRepository.findBy({
+            userId: id
+        });
+
+        res.json({
+            ...fetch
+        });
+    });
+
+    app.get("/embed/:customId", async (req, res) => {
+        const customId = req.params.customId;
+        const fetch = await embedRepository.findOneBy({
+            customId
+        });
+
+        res.json({
+            ...fetch
         });
     });
 
