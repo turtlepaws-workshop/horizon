@@ -150,5 +150,9 @@ export async function initExpress(client: Client){
         });
     });
 
+    app.post("/embed/create", async (req, res) => {
+        //Something to get data
+    });
+
     app.listen(2000, () => console.log("API up on port 2000 (for local use: http://localhost:2000/)"));
 }
