@@ -1,5 +1,5 @@
 import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, MessageButton, MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message } from "discord.js";
+import { ChatInputCommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, ButtonStyle } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
@@ -70,13 +70,13 @@ export default class Invite extends Command {
 
         for(const embed of data.filter(embed => {
             const ebd = parseEmbed(embed);
-            const point = (ebd.title || ebd.author.name || ebd.footer.text || embed.customId);
+            const point = (ebd.data.title || ebd.data.author.name || ebd.data.footer.text || embed.customId);
             
             return (point.startsWith(focus) || point.endsWith(focus));
         })){
             const ebd = parseEmbed(embed);
             respond.push({
-                name: (ebd.title || ebd.author.name || ebd.footer.text || "No data to provide.") + ` (${embed.customId})`,
+                name: (ebd.data.title || ebd.data.author.name || ebd.data.footer.text || "No data to provide.") + ` (${embed.customId})`,
                 value: embed.customId
             });
         }
@@ -84,7 +84,7 @@ export default class Invite extends Command {
         await interaction.respond(respond);
     }
 
-    async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
+    async execute(interaction: ChatInputCommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
         const subcommand = interaction.options.getSubcommand();
         const repo = await fetchRepository();
 
@@ -158,7 +158,7 @@ export default class Invite extends Command {
                 const data = {
                     customId: v4(),
                     data: new MessageEmbed()
-                        .setColor("BLURPLE")
+                        .setColor("Blurple")
                         //@ts-ignore
                         .setTitle(m.getTextInputValue(fieldIds.title))
                         //@ts-ignore
@@ -245,7 +245,7 @@ export default class Invite extends Command {
                             new MessageButton()
                             .setLabel(`Jump to message`)
                             .setURL(message.url)
-                            .setStyle("LINK")
+                            .setStyle(ButtonStyle.Link)
                         ]
                     }
                 ]

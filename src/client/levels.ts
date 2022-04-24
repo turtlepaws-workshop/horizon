@@ -1,6 +1,5 @@
-import { Channel, Client, Guild, GuildMember, HexColorString, Message, MessageAttachment, MessageEmbed, User } from "discord.js";
+import { Channel, Client, Guild, GuildMember, HexColorString, Message, Attachment as MessageAttachment, EmbedBuilder as MessageEmbed, User } from "discord.js";
 import TypeormDiscordXp from "discord-xp-typeorm";
-const XPLevels = new TypeormDiscordXp();
 import { MessageModel, Model } from ".././models/messages";
 export const defaultMessageLevel = 50;
 import { EventEmitter } from "events";
@@ -15,10 +14,12 @@ import StringMap, { parseStringMap } from ".././lib/stringmap";
 import StringSet, { parseStringSet } from ".././lib/StringSet";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { User as UserEntity } from "../entities/user";
+import { ALLOWED_EXTENSIONS } from "@discordjs/rest";
+let XPLevels: TypeormDiscordXp;
 
 //https://www.npmjs.com/package/discord-xp
 export default async function initLevels(client: Client) {
-    XPLevels.setURL((await AppDataSource));
+    XPLevels = new TypeormDiscordXp(await AppDataSource);
 }
 
 //xp: the xp to add
@@ -179,7 +180,7 @@ export async function generateRankCard(member: GuildMember) {
     
     const rankCard = await new Rank()
         .setAvatar(member.displayAvatarURL({
-            format: "jpg"
+            extension: "jpg"
         }))
         .setCurrentXP(xpUser.xp)
         .setLevel(xpUser.level)
@@ -265,7 +266,7 @@ export async function generateLeaderboard(guild: Guild){
         context.fillText(`${availbleUsername}`, poses.defualt.text.x, posData.text);
 
         //Load the avatar. If the user does not exist use a discord one
-        const avatar = await Canvas.loadImage(dMember == null ? "https://cdn.discordapp.com/embed/avatars/0.png" : dMember.displayAvatarURL({ format: 'png' }));
+        const avatar = await Canvas.loadImage(dMember == null ? "https://cdn.discordapp.com/embed/avatars/0.png" : dMember.displayAvatarURL({ extension: 'png' }));
 
         //Draw the avatar
         context.save()

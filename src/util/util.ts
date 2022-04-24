@@ -1,4 +1,4 @@
-import { CommandInteraction, GuildMember, Interaction, MessageButton, PermissionString } from "discord.js";
+import { CommandInteraction, GuildMember, Interaction, ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, SelectMenuBuilder as MessageSelectMenu, PermissionsString as PermissionString, ButtonStyle, AnyComponentBuilder } from "discord.js";
 import { SupportServer } from "../config/config";
 import { calculatePermissionForRun } from "./permissions";
 import { TimestampStylesString } from "@discordjs/builders";
@@ -28,7 +28,7 @@ async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glit
             components: [
                 new MessageButton()
                 .setLabel(`Support Server`)
-                .setStyle("LINK")
+                .setStyle(ButtonStyle.Link)
                 .setURL(SupportServer)
             ]
         }
@@ -36,7 +36,7 @@ async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glit
 
     //@ts-ignore
     if(int?.deferred || int?.replied){
-        if(int.isApplicationCommand()){
+        if(int.isCommand()){
             return (await int.editReply({
                 content: message,
                 components
@@ -60,6 +60,11 @@ async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glit
 function hasPermission(permission: PermissionString, member: GuildMember | APIInteractionGuildMember){
     //@ts-expect-error
     return member.permissions.has(permission);
+}
+
+export function actionRow(...components: AnyComponentBuilder[]){
+    return new MessageActionRow()
+    .addComponents(...components);
 }
 
 export {

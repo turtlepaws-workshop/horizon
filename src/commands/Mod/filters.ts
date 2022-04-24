@@ -1,5 +1,5 @@
 import { channelMention, codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, MessageButton, MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, TextChannel, MessageActionRow } from "discord.js";
+import { CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, TextChannel, ActionRowBuilder as MessageActionRow } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
@@ -30,7 +30,7 @@ export default class Invite extends Command {
                 .addSubcommandGroup(i => {
                     return i.setName("links")
                     .setDescription("Update the guilds link filter settings.")
-                    .addSubcommand(e => 
+                    .addSubcommand(e =>
                         e.setName("add")
                         .setDescription("Add a blacklisted link.")
                         .addStringOption(o => 
@@ -125,7 +125,7 @@ export default class Invite extends Command {
                 )
                 .addSubcommand(s => 
                     s.setName("remove")
-                    .setDescription("Remove a filter.") 
+                    .setDescription("Remove a filter.")
                     .addStringOption(o =>
                         o.setName("filter")
                         .setDescription("The filter you would like to remove.")

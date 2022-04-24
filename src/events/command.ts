@@ -1,5 +1,5 @@
 import { codeBlock } from "@discordjs/builders";
-import { Client, Interaction } from "discord.js";
+import { ChannelType, Client, Interaction } from "discord.js";
 import Event from "../lib/event"
 import { ErrorMessage } from "../util/util";
 
@@ -14,8 +14,7 @@ export default class InteractionCommandEvent extends Event {
         if(!interaction.isCommand()) return;
         const Command = client.commands.all.find(e => e.name == interaction.commandName);
         if(!Command) return ErrorMessage(`Command not found...`, interaction);
-
-        if((Command.serverOnly || true) && interaction.channel.type == "DM"){
+        if((Command.serverOnly || true) && interaction.channel.isDMBased()){
             return ErrorMessage(
                 `This command can only be executed in a server!`,
                 interaction

@@ -1,4 +1,4 @@
-import { Client, ContextMenuInteraction, PermissionString } from "discord.js";
+import { Client, ContextMenuCommandInteraction as ContextMenuInteraction, PermissionsString as PermissionString } from "discord.js";
 import { ContextMenuBuilder } from "discord.js-util";
 import { MenuOptions } from "../typings";
 

@@ -11,7 +11,7 @@ export default class MenuInteractionEvent extends Event {
     }
 
     async execute(client: Client<boolean>, interaction: Interaction): Promise<void> {
-        if(!interaction.isContextMenu()) return;
+        if(!interaction.isContextMenuCommand()) return;
         const Menu = client.menus.find(e => e.name == interaction.commandName);
         if(!Menu) return ErrorMessage(`Menu not found...`, interaction);
 

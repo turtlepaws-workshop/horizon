@@ -1,7 +1,7 @@
 import { channelMention, codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, MessageButton, MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, TextChannel, MessageActionRow } from "discord.js";
+import { ButtonStyle, CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, TextChannel, ActionRowBuilder as MessageActionRow } from "discord.js";
 import { Embed } from "../../util/embed";
-import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
+import { actionRow as ActionRow, calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
 import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 import { Modal, showModal, TextInputComponent } from "discord-modals";
@@ -9,7 +9,7 @@ import { v4 } from "uuid";
 import EmbedData from "../../models/embed";
 import { EmbedModel } from "../../typings/index";
 import { website } from "../../config/config";
-import { APIApplicationCommandAutocompleteResponse, ButtonStyle } from "discord-api-types";
+import { APIApplicationCommandAutocompleteResponse } from "discord-api-types";
 import { createSettings } from "../../client/levels";
 import embed from "../../models/embed";
 import { parseStringMap } from "../../lib/stringmap";
@@ -87,29 +87,25 @@ export default class Invite extends Command {
         const buttons = {
             Server: new MessageButton()
             .setLabel("Server Settings")
-            .setStyle("PRIMARY")
+            .setStyle(ButtonStyle.Primary)
             .setCustomId(customIds.buttons.Guild),
             Levels: new MessageButton()
             .setLabel("Level Settings")
-            .setStyle("SECONDARY")
+            .setStyle(ButtonStyle.Secondary)
             .setCustomId(customIds.buttons.Levels),
             Moderator: new MessageButton()
             .setLabel("Moderator Settings")
-            .setStyle("DANGER")
+            .setStyle(ButtonStyle.Danger)
             .setCustomId(customIds.buttons.Mod),
             on: () => new MessageButton()
             .setLabel("Set on")
-            .setStyle("SUCCESS")
+            .setStyle(ButtonStyle.Success)
             .setCustomId(customId(customIds.buttons.on)),
             off: () => new MessageButton()
             .setLabel("Set off")
-            .setStyle("DANGER")
+            .setStyle(ButtonStyle.Danger)
             .setCustomId(customId(customIds.buttons.off))
         };
-        function ActionRow(...buttons: MessageButton[]){
-            return new MessageActionRow()
-            .addComponents(buttons);
-        }
         const actionRows = {
             main: ActionRow(buttons.Server, buttons.Moderator, buttons.Levels),
             offOn: () => ActionRow(buttons.on(), buttons.off())
@@ -143,7 +139,9 @@ export default class Invite extends Command {
             //.addField(`${client.customEmojis.get("levels")} Levels`, `${embedValue("Enabled", checkOrXMark(currentSettings.levels_enabled))}${embedValue("Embed", checkOrXMark(currentSettings.levels_embed))}${embedValue("Custom Message", currentSettings.levels_message || "Default")}${embedValue("Message Channel", channelMention(currentSettings.levels_messageChannel) || "None")}${embedValue("Card Progress Bar Color", code(currentSettings.levels_cardProgressBar))}${embedValue("Card Background URL", currentSettings.levels_cardBackgroundURL, true)}`)
             //.addField(`${client.customEmojis.get("list")} Server Settings`, `${embedValue("Moderator Commands", currentSettings.guild_modCommands, true)}`)
             .build(),
-            components: [actionRows.main]
+            components: [
+                actionRows.main
+            ]
         });
 
         const collector = await message.createMessageComponentCollector({

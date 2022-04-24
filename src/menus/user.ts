@@ -1,4 +1,4 @@
-import { CacheType, Client, ContextMenuInteraction, GuildMember, MessageButton } from "discord.js";
+import { ButtonStyle, CacheType, Client, ContextMenuCommandInteraction as ContextMenuInteraction, GuildMember, ButtonBuilder as MessageButton } from "discord.js";
 import { Embed } from ".././util/embed";
 import { Timestamp } from ".././util/util";
 import Menu from ".././lib/menu";
@@ -58,11 +58,11 @@ export default class UserInfoMenu extends Menu {
                     components: [
                         new MessageButton()
                         .setLabel(`Avatar URL`)
-                        .setStyle(`LINK`)
+                        .setStyle(ButtonStyle.Link)
                         .setURL(user.displayAvatarURL()),
                         new MessageButton()
                         .setLabel(`Banner URL${hasBanner() ? "" : " (Disabled)"}`)
-                        .setStyle(`LINK`)
+                        .setStyle(ButtonStyle.Link)
                         .setURL(bannerURL() || "https://discord.com/404")
                         .setDisabled(!hasBanner())
                     ]

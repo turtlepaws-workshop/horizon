@@ -1,4 +1,4 @@
-import { Client, Collection } from "discord.js";
+import { Client, Collection, IntentsBitField, Partials } from "discord.js";
 import emojiManager from "./client/emojiManager";
 import events from "./client/events";
 import menus from "./client/menus";
@@ -11,25 +11,19 @@ import initLeaderboards from "./client/leaderboards";
 import "reflect-metadata"
 import { initExpress } from "./api";
 import { GuildSettingsCache } from "./client/settings";
+import { AllIntents, AllPartials } from "./lib/all";
+const IFlags = IntentsBitField.Flags;
 
 const client = new Client({
     intents: [
-        "DIRECT_MESSAGES",
-        "GUILDS",
-        "GUILD_BANS",
-        "GUILD_EMOJIS_AND_STICKERS",
-        "GUILD_INTEGRATIONS",
-        "GUILD_INVITES",
-        "GUILD_MEMBERS",
-        "GUILD_SCHEDULED_EVENTS",
-        "GUILD_MESSAGES"
+        ...AllIntents({
+            guildVoice: false,
+            typing: false,
+            guildBots: false
+        })
     ],
     partials: [
-        "CHANNEL",
-        "GUILD_MEMBER",
-        "GUILD_SCHEDULED_EVENT",
-        "USER",
-        "MESSAGE"
+        ...AllPartials()
     ]
 });
 

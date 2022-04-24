@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "@discordjs/builders";
-import { ApplicationCommandAutocompleteOption, AutocompleteInteraction, Client, CommandInteraction, PermissionString } from "discord.js";
+import { ApplicationCommandAutocompleteOption, AutocompleteInteraction, Client, CommandInteraction, PermissionsString as PermissionString } from "discord.js";
 import { CommandOptions } from "../typings";
 import SlashCommandOptionBuilder from "./optionBuilder";
 import HorizonSlashCommandBuilder from "./SlashCommandBuilder";

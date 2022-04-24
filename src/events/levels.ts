@@ -22,7 +22,7 @@ export default class LevelMessageEvent extends Event {
         const res = await addMessage(message.member);
         if(res.levels.leveledUp){
             message.channel.send({
-                content: `GG ${message.author}. You have leveled up to level ${res.levels.user.level}!`
+                content: `GG ${message.author}. You have leveled up to level ${res.levels.user}!`
             })
         }
     }
