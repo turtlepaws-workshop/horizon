@@ -1,5 +1,5 @@
 import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, ButtonStyle } from "discord.js";
+import { ChatInputCommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionType as ApplicationCommandOptionChoice, Channel, Message, ButtonStyle, ApplicationCommandOptionChoiceData } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
@@ -10,7 +10,6 @@ import EmbedData from "../../models/embed";
 import { EmbedModel } from "../../typings/index";
 import { CustomEmbed } from "../../entities/embed"
 import { website } from "../../config/config";
-import { APIApplicationCommandAutocompleteResponse } from "discord-api-types";
 import { AppDataSource } from "../../sqlite";
 import { parseEmbed } from "src/client/parse";
 
@@ -66,7 +65,7 @@ export default class Invite extends Command {
         }));
 
         const focus = interaction.options.getFocused().toString();
-        const respond: ApplicationCommandOptionChoice[] = [];
+        const respond: ApplicationCommandOptionChoiceData[] = [];
 
         for(const embed of data.filter(embed => {
             const ebd = parseEmbed(embed);

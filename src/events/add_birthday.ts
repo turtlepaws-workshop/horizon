@@ -13,7 +13,7 @@ export default class InteractionAutocompleteEvent extends Event {
     async execute(client: Client<boolean>, interaction: Interaction): Promise<void> {
         if(!interaction.isButton()) return;
         if(interaction.customId != "ADD_BIRTHDAY") return;
-        if(!hasPermission("MANAGE_EVENTS", interaction.member)) return ErrorMessage(
+        if(!hasPermission("ManageEvents", interaction.member)) return ErrorMessage(
             "You don't have the correct permissions to add this event!",
             interaction
         );

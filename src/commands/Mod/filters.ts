@@ -1,5 +1,5 @@
 import { channelMention, codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, TextChannel, ActionRowBuilder as MessageActionRow } from "discord.js";
+import { CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, Channel, Message, TextChannel, ActionRowBuilder as MessageActionRow } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
@@ -9,18 +9,30 @@ import { v4 } from "uuid";
 import EmbedData from "../../models/embed";
 import { EmbedModel } from "../../typings/index";
 import { website } from "../../config/config";
-import { APIApplicationCommandAutocompleteResponse, ButtonStyle } from "discord-api-types";
 import { createSettings } from "../../client/levels";
 import embed from "../../models/embed";
 import { parseStringMap } from "../../lib/stringmap";
+import { APIApplicationCommandOptionChoice } from "discord-api-types/v9";
 
 export default class Invite extends Command {
     constructor() {
-        const filters: [name: string, value: string][] = [
-            ["Links", "LINK"],
-            ["Bad Word", "BAD_WORD"],
-            ["Discord Invite", "DISCORD_INVITE"],
-            ["Redirects and Link shortners", "REDIRECT"]
+        const filters: APIApplicationCommandOptionChoice<string>[] = [
+            {
+                name: "Links",
+                value: "LINK"
+            },
+            {
+                name: "Bad Word", 
+                value: "BAD_WORD"
+            },
+            {
+                name: "Discord Invite", 
+                value: "DISCORD_INVITE"
+            },
+            {
+                name: "Redirects and Link shortners", 
+                value: "REDIRECT"
+            }
         ];
 
         super({
@@ -119,7 +131,7 @@ export default class Invite extends Command {
                     .addStringOption(o =>
                         o.setName("filter")
                         .setDescription("The filter you would like to add.")
-                        .setChoices(filters)
+                        .setChoices(...filters)
                         .setRequired(true)
                     )
                 )
@@ -129,7 +141,7 @@ export default class Invite extends Command {
                     .addStringOption(o =>
                         o.setName("filter")
                         .setDescription("The filter you would like to remove.")
-                        .setChoices(filters)
+                        .setChoices(...filters)
                         .setRequired(true)
                     )
                 ),

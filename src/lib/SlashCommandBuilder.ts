@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
+import { APIApplicationCommandOptionChoice } from "discord-api-types/v9";
 
 export default class HorizonSlashCommandBuilder {
     public builder: SlashCommandBuilder;
@@ -31,12 +32,12 @@ export default class HorizonSlashCommandBuilder {
         return this;
     }
 
-    addStringOption(name: string, description: string, req: boolean = false, choices?: [name: string, value: string][]): this {
+    addStringOption(name: string, description: string, req: boolean = false, choices?: APIApplicationCommandOptionChoice<string>[]): this {
         this.builder.addStringOption(o => {
             o.setName(name)
             .setDescription(description)
             .setRequired(req)
-            if(choices != null) o.addChoices(choices)
+            if(choices != null) o.addChoices(...choices)
             return o;
         });
         return this;

@@ -1,5 +1,5 @@
 import { channelMention, codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { ButtonStyle, CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, TextChannel, ActionRowBuilder as MessageActionRow } from "discord.js";
+import { ButtonStyle, CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, Channel, Message, TextChannel, ActionRowBuilder as MessageActionRow } from "discord.js";
 import { Embed } from "../../util/embed";
 import { actionRow as ActionRow, calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
@@ -9,7 +9,6 @@ import { v4 } from "uuid";
 import EmbedData from "../../models/embed";
 import { EmbedModel } from "../../typings/index";
 import { website } from "../../config/config";
-import { APIApplicationCommandAutocompleteResponse } from "discord-api-types";
 import { createSettings } from "../../client/levels";
 import embed from "../../models/embed";
 import { parseStringMap } from "../../lib/stringmap";
@@ -107,8 +106,8 @@ export default class Invite extends Command {
             .setCustomId(customId(customIds.buttons.off))
         };
         const actionRows = {
-            main: ActionRow(buttons.Server, buttons.Moderator, buttons.Levels),
-            offOn: () => ActionRow(buttons.on(), buttons.off())
+            main: ActionRow(true, buttons.Server, buttons.Moderator, buttons.Levels),
+            offOn: () => ActionRow(true, buttons.on(), buttons.off())
         };
 
         console.log("adding functions")

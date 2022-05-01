@@ -1,8 +1,10 @@
-import { CommandInteraction, GuildMember, Interaction, ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, SelectMenuBuilder as MessageSelectMenu, PermissionsString as PermissionString, ButtonStyle, AnyComponentBuilder } from "discord.js";
+import { CommandInteraction, GuildMember, Interaction, ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, SelectMenuBuilder as MessageSelectMenu, PermissionsString as PermissionString, ButtonStyle, AnyComponentBuilder, ComponentType } from "discord.js";
 import { SupportServer } from "../config/config";
 import { calculatePermissionForRun } from "./permissions";
 import { TimestampStylesString } from "@discordjs/builders";
 import { APIInteractionGuildMember } from "discord-api-types";
+import { APIActionRowComponent } from "discord-api-types/v10";
+import { APIMessageActionRowComponent } from "discord-api-types/v9";
 
 function unixTime(time: Date|number){
     const date = new Date(time);
@@ -57,14 +59,28 @@ async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glit
     }
 }
 
-function hasPermission(permission: PermissionString, member: GuildMember | APIInteractionGuildMember){
+function hasPermission(permission: PermissionString, member: GuildMember | APIInteractionGuildMember): boolean {
     //@ts-expect-error
     return member.permissions.has(permission);
 }
 
-export function actionRow(...components: AnyComponentBuilder[]){
-    return new MessageActionRow()
-    .addComponents(...components);
+export interface ActionRowInterface {
+    type: ComponentType;
+    components: AnyComponentBuilder[];
+}
+
+export function actionRow(oldMode: false, ...components: AnyComponentBuilder[]): MessageActionRow;
+export function actionRow(oldMode: true, ...components: AnyComponentBuilder[]): (APIActionRowComponent<APIMessageActionRowComponent>);
+export function actionRow(oldMode?: boolean,...components: any[]): any {
+    if(oldMode){
+        return {
+            type: ComponentType.ActionRow,
+            components
+        }
+    } else {
+        return new MessageActionRow()
+        .addComponents(components);
+    }
 }
 
 export {

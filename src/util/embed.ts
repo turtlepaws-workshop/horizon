@@ -9,11 +9,11 @@ export class Embed extends MessageEmbed {
     }
 
     addField(name: string, value: string, inline?: boolean) {
-        this.addFields({
+        this.addFields([{
             name,
             value,
             inline
-        });
+        }]);
         return this;
     }
 

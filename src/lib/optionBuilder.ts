@@ -1,3 +1,4 @@
+//@ts-nocheck since its deprecated
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 ////////////////
