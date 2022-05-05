@@ -47,7 +47,7 @@ export default class Invite extends Command {
                         .setDescription("Add a blacklisted link.")
                         .addStringOption(o => 
                             o.setName("link")
-                            .setName("The link to add.")
+                            .setDescription("The link to add.")
                             .setRequired(true)
                         )
                     )
@@ -90,7 +90,7 @@ export default class Invite extends Command {
                         .setDescription("Add a blacklisted word.")
                         .addStringOption(o => 
                             o.setName("word")
-                            .setName("The word to add.")
+                            .setDescription("The word to add.")
                             .setRequired(true)
                         )
                     )
@@ -148,8 +148,8 @@ export default class Invite extends Command {
             requiredPermissions: [],
             runPermissions: [],
             somePermissions: [
-                "MANAGE_MESSAGES",
-                "MANAGE_GUILD"
+                "ManageMessages",
+                "ManageGuild"
             ]
         });
     }

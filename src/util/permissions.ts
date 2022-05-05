@@ -1,7 +1,7 @@
-import { Client, Permissions, PermissionString } from "discord.js";
+import { Client, PermissionsBitField } from "discord.js";
 
 export function calculatePermissionForRun(client: Client){
-    const permissions: Permissions = new Permissions;
+    const permissions: PermissionsBitField = new PermissionsBitField;
 
     for(const cmd of client.commands.all){
         if(cmd.runPermissions != null){

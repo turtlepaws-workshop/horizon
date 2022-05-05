@@ -1,5 +1,5 @@
 import { codeBlock, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, MessageButton, GuildMember } from "discord.js";
+import { CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, GuildMember, ButtonStyle, ChannelType } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, Timestamp } from "../../util/util";
 import Command from "../../lib/command";
@@ -29,15 +29,15 @@ export default class Invite extends Command {
         await interaction.reply({
             embeds: new Embed()
             .setTitle(`Info on ${guild}`)
-            .addField(`${client.customEmojis.get("timer")} Created`, `${Timestamp(guild.createdTimestamp, "NONE")} (${Timestamp(guild.createdTimestamp, "R")})`)
-            .addField(`${client.customEmojis.get("tada")} Server Birthday`, `${Timestamp(guild.createdTimestamp, "NONE")}`)
-            .addField(`${client.customEmojis.get("secure")} Verification`, `\`${guild.verificationLevel}\``)
-            .addField(`${client.customEmojis.get("channel")} Channels`, `${client.customEmojis.get("folder")} ${channels.filter(e => e.type == "GUILD_CATEGORY").size} | ${client.customEmojis.get("speaker")} ${channels.filter(e => e.type == "GUILD_VOICE").size} | ${client.customEmojis.get("channel")} ${channels.filter(e => e.type == "GUILD_TEXT").size}`)
-            .addField(`${client.customEmojis.get("members")} Members`, `${client.customEmojis.get("members")} ${guild.memberCount} (Total) | ${client.customEmojis.get("bot")} ${guild.members.cache.filter(e => e.user.bot).size} | ${client.customEmojis.get("human")} ${guild.members.cache.filter(e => !e.user.bot).size}`)
-            .addField(`${client.customEmojis.get("owner")} Owner`, `${owner} (\`${owner.id}\`)`)
-            .addField(`${client.customEmojis.get("boost_")} Boosts`, `${guild.premiumSubscriptionCount} (\`${guild.premiumTier}\`)`)
-            .addField(`${client.customEmojis.get("links")} Vanity URL`, `${guild?.vanityURLCode ? guild.vanityURLCode : "None"}`)
-            .addField(`${client.customEmojis.get("settings")} Emojis/Stickers`, `${client.customEmojis.get("sticker")} ${guild.stickers.cache.size} | ${client.customEmojis.get("wumpus")} ${guild.emojis.cache.filter(e => !e.animated).size} (static) | ${client.customEmojis.get("gif")} ${guild.emojis.cache.filter(e => e.animated).size}`)
+            .addField(`${client.customEmojis.get("fe_clock")} Created`, `${Timestamp(guild.createdTimestamp, "NONE")} (${Timestamp(guild.createdTimestamp, "R")})`)
+            .addField(`${client.customEmojis.get("fe_created")} Server Birthday`, `${Timestamp(guild.createdTimestamp, "NONE")}`)
+            .addField(`${client.customEmojis.get("fe_verification")} Verification`, `\`${guild.verificationLevel}\``)
+            .addField(`${client.customEmojis.get("fe_channel")} Channels`, `${client.customEmojis.get("fe_folder")} ${channels.filter(e => e.type == ChannelType.GuildCategory).size} | ${client.customEmojis.get("fe_voice")} ${channels.filter(e => e.type == ChannelType.GuildVoice).size} | ${client.customEmojis.get("fe_channel")} ${channels.filter(e => e.type == ChannelType.GuildText).size}`)
+            .addField(`${client.customEmojis.get("fe_people")} Members`, `${client.customEmojis.get("fe_people")} ${guild.memberCount} (Total) | ${client.customEmojis.get("fe_bot")} ${guild.members.cache.filter(e => e.user.bot).size} | ${client.customEmojis.get("fe_user")} ${guild.members.cache.filter(e => !e.user.bot).size}`)
+            .addField(`${client.customEmojis.get("fe_user")} Owner`, `${owner} (\`${owner.id}\`)`)
+            .addField(`${client.customEmojis.get("fe_upgrade")} Boosts`, `${guild.premiumSubscriptionCount} (\`${guild.premiumTier}\`)`)
+            .addField(`${client.customEmojis.get("te_link")} Vanity URL`, `${guild?.vanityURLCode ? guild.vanityURLCode : "None"}`)
+            .addField(`${client.customEmojis.get("fe_gear")} Emojis/Stickers`, `${client.customEmojis.get("fe_sticker")} ${guild.stickers.cache.size} | ${client.customEmojis.get("fe_emoji")} ${guild.emojis.cache.filter(e => !e.animated).size} (static) | ${client.customEmojis.get("fe_gif")} ${guild.emojis.cache.filter(e => e.animated).size}`)
             .setThumbnail(guild.iconURL())
             .setFooter({
                 text: guild.id,
@@ -51,16 +51,16 @@ export default class Invite extends Command {
                         new MessageButton()
                         .setLabel(`Icon`)
                         .setURL(guild.iconURL())
-                        .setStyle("LINK"),
+                        .setStyle(ButtonStyle.Link),
                         new MessageButton()
                         .setLabel(`Banner${hasBanner() ? "" : " (Disabled)"}`)
                         .setDisabled(!hasBanner())
                         .setURL(hasBanner() ? guild.bannerURL() : "https://discord.com/404")
-                        .setStyle("LINK"),
+                        .setStyle(ButtonStyle.Link),
                         new MessageButton()
                         .setLabel("Add birthday as event")
                         .setCustomId("ADD_BIRTHDAY")
-                        .setStyle("SUCCESS")
+                        .setStyle(ButtonStyle.Success)
                     ]
                 }
             ]

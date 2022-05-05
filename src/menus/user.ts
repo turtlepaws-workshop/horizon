@@ -38,13 +38,13 @@ export default class UserInfoMenu extends Menu {
         await interaction.reply({
             embeds: new Embed()
             .setTitle(`Info on ${user.user.username}`)
-            .addField(`${client.customEmojis.get("timer")} Joined Discord`, `${Timestamp(user.user.createdTimestamp, "NONE")} (${Timestamp(user.user.createdTimestamp, "R")})`)
-            .addField(`${client.customEmojis.get("right")} Joined This Server`, `${Timestamp(user.joinedTimestamp, "NONE")} (${Timestamp(user.joinedTimestamp, "R")})`)
-            .addField(`${client.customEmojis.get("art")} Role Color`, `\`${user.displayHexColor}\``)
-            .addField(`${client.customEmojis.get("secure")} Pending Verification`, `${user.pending ? "✅" : "❌"}`)
-            .addField(`${client.customEmojis.get("role")} Roles`, `${user.roles.cache.map(e => `${e}`).join(" ")}`)
-            .addField(`${client.customEmojis.get("art")} Accent Color`, `\`${user.user.hexAccentColor || "None"}\``)
-            .addField(`${client.customEmojis.get("channel")} Tag`, `\`${user.user.tag}\``)
+            .addField(`${client.customEmojis.get("fe_clock")} Joined Discord`, `${Timestamp(user.user.createdTimestamp, "NONE")} (${Timestamp(user.user.createdTimestamp, "R")})`)
+            .addField(`${client.customEmojis.get("fe_join")} Joined This Server`, `${Timestamp(user.joinedTimestamp, "NONE")} (${Timestamp(user.joinedTimestamp, "R")})`)
+            .addField(`${client.customEmojis.get("fe_paint")} Role Color`, `\`${user.displayHexColor}\``)
+            .addField(`${client.customEmojis.get("fe_verification")} Pending Verification`, `${user.pending ? "✅" : "❌"}`)
+            .addField(`${client.customEmojis.get("fe_role")} Roles`, `${user.roles.cache.map(e => `${e}`).join(" ")}`)
+            .addField(`${client.customEmojis.get("fe_fill")} Accent Color`, `\`${user.user.hexAccentColor || "None"}\``)
+            .addField(`${client.customEmojis.get("fe_channel")} Tag`, `\`${user.user.tag}\``)
             .setThumbnail(user.displayAvatarURL())
             .setFooter({
                 text: `${user.id}`,

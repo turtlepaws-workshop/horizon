@@ -17,10 +17,10 @@ export default class Invite extends Command {
                 .setName("webhook")
                 .setDescription("Create a webhook in the current channel."),
             requiredPermissions: [
-                "MANAGE_WEBHOOKS"
+                "ManageWebhooks"
             ],
             runPermissions: [
-                "MANAGE_WEBHOOKS"
+                "ManageWebhooks"
             ],
             somePermissions: []
         });

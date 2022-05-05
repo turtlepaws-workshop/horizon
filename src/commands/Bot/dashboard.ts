@@ -1,5 +1,5 @@
 import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, MessageButton } from "discord.js";
+import { CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, ButtonStyle } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun } from "../../util/util";
 import Command from "../../lib/command";
@@ -20,7 +20,7 @@ export default class Invite extends Command {
 
     async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
         await interaction.reply({
-            content: `${client.customEmojis.get("check_")} Here you go!`,
+            content: `${client.customEmojis.get("fe_gear")} Here you go!`,
             components: [
                 {
                     type: 1,
@@ -28,7 +28,7 @@ export default class Invite extends Command {
                         new MessageButton()
                         .setLabel(`Go to your dashboard`)
                         .setURL(generateDashboardURL(interaction.guild.id))
-                        .setStyle("LINK")
+                        .setStyle(ButtonStyle.Link)
                     ]
                 }
             ]

@@ -1,7 +1,7 @@
 import { channelMention, codeBlock, SlashCommandBuilder } from "@discordjs/builders";
 import { ButtonStyle, CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, Channel, Message, TextChannel, ActionRowBuilder as MessageActionRow } from "discord.js";
 import { Embed } from "../../util/embed";
-import { actionRow as ActionRow, calculatePermissionForRun, ErrorMessage } from "../../util/util";
+import { actionRow as ActionRow, actionRowJSON, calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
 import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 import { Modal, showModal, TextInputComponent } from "discord-modals";
@@ -20,7 +20,7 @@ export default class Invite extends Command {
                 .setName("settings")
                 .setDescription("Change the guilds settings."),
             requiredPermissions: [
-                "ADMINISTRATOR"
+                "Administrator"
             ],
             runPermissions: [],
             somePermissions: []
@@ -106,8 +106,8 @@ export default class Invite extends Command {
             .setCustomId(customId(customIds.buttons.off))
         };
         const actionRows = {
-            main: ActionRow(true, buttons.Server, buttons.Moderator, buttons.Levels),
-            offOn: () => ActionRow(true, buttons.on(), buttons.off())
+            main: actionRowJSON(buttons.Server, buttons.Moderator, buttons.Levels),
+            offOn: () => actionRowJSON(buttons.on(), buttons.off())
         };
 
         console.log("adding functions")

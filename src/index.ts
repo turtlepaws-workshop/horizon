@@ -45,7 +45,8 @@ events(client);
 menus(client);
 
 //init modals
-init(client);
+//[DEPRECATED] Now using discord v14 modals
+//init(client);
 
 //init mongo db
 //[DEPRECATED] Now using sqlite instead

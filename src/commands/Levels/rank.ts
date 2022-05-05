@@ -1,5 +1,5 @@
 import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionChoice, Channel, Message, TextChannel, GuildMember } from "discord.js";
+import { CommandInteraction, CacheType, Client, ApplicationCommandAutocompleteOption, AutocompleteInteraction, Channel, Message, TextChannel, GuildMember } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
@@ -9,7 +9,6 @@ import { v4 } from "uuid";
 import EmbedData from "../../models/embed";
 import { EmbedModel } from "../../typings/index";
 import { website } from "../../config/config";
-import { APIApplicationCommandAutocompleteResponse } from "discord-api-types";
 import { generateRankCard } from "../../client/levels";
 import { hasLevels } from "../../client/settings";
 

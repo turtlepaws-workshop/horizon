@@ -1,7 +1,7 @@
 import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { ChatInputCommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionType as ApplicationCommandOptionChoice, Channel, Message, ButtonStyle, ApplicationCommandOptionChoiceData } from "discord.js";
+import { ChatInputCommandInteraction, ModalBuilder, CacheType, Client, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, ApplicationCommandAutocompleteOption, AutocompleteInteraction, ApplicationCommandOptionType as ApplicationCommandOptionChoice, Channel, Message, ButtonStyle, ApplicationCommandOptionChoiceData, TextInputBuilder, TextInputStyle } from "discord.js";
 import { Embed } from "../../util/embed";
-import { calculatePermissionForRun, ErrorMessage } from "../../util/util";
+import { actionRow, calculatePermissionForRun, ErrorMessage } from "../../util/util";
 import Command from "../../lib/command";
 import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 import { Modal, showModal, TextInputComponent } from "discord-modals";
@@ -11,7 +11,7 @@ import { EmbedModel } from "../../typings/index";
 import { CustomEmbed } from "../../entities/embed"
 import { website } from "../../config/config";
 import { AppDataSource } from "../../sqlite";
-import { parseEmbed } from "src/client/parse";
+import { parseEmbed } from "../../client/parse";
 
 async function fetchRepository() {
     return (await AppDataSource).getRepository(CustomEmbed);    
@@ -47,12 +47,12 @@ export default class Invite extends Command {
                 }),
             requiredPermissions: [],
             runPermissions: [
-                "SEND_MESSAGES"
+                "SendMessages"
             ],
             somePermissions: [
-                "MANAGE_GUILD",
-                "MANAGE_MESSAGES",
-                "MANAGE_CHANNELS"
+                "ManageGuild",
+                "ManageMessages",
+                "ManageChannels"
             ]
         });
     }
@@ -100,7 +100,7 @@ export default class Invite extends Command {
             const fields: {
                 name: string,
                 customId: string,
-                type: "LONG" | "SHORT",
+                type: TextInputStyle,
                 max?: number,
                 min?: number,
                 req?: boolean
@@ -108,36 +108,37 @@ export default class Invite extends Command {
                     {
                         customId: customId("title"),
                         name: "Title",
-                        type: "SHORT",
+                        type: TextInputStyle.Short,
                         max: 256
                     },
                     {
                         name: "Description",
                         customId: customId("description"),
                         max: 4000,
-                        type: "LONG"
+                        type: TextInputStyle.Paragraph
                     },
                     {
                         name: "Author",
                         customId: customId("author_name"),
                         max: 256,
-                        type: "SHORT"
+                        type: TextInputStyle.Short
                     },
                     {
                         name: "Footer",
                         customId: customId("footer_name"),
                         max: 2048,
-                        type: "LONG"
+                        type: TextInputStyle.Short
                     }
                 ]
     
-            const modal = new Modal()
+            const modal = new ModalBuilder()
                 .setCustomId(modalCustomId)
                 .setTitle("Embed Creator");
     
+            const components = [];
             fields.forEach(f => {
-                modal.addComponents(
-                    new TextInputComponent()
+                components.push(
+                    new TextInputBuilder()
                         .setCustomId(f.customId)
                         .setLabel(f.name)
                         .setMaxLength(f.max)
@@ -145,13 +146,14 @@ export default class Invite extends Command {
                         .setRequired(f.req || false)
                 );
             });
+            
+            modal.addComponents([
+                actionRow<TextInputBuilder>(components)
+            ])
+            
+            await interaction.showModal(modal);
     
-            await showModal(modal, {
-                client,
-                interaction
-            });
-    
-            client.on("modalSubmit", async m => {
+            const Modal = await interaction.awaitModalSubmit({ time: 0 }).then(async m => {
                 if(m.customId != modalCustomId) return;
 
                 const data = {

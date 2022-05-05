@@ -1,5 +1,5 @@
 import { codeBlock, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, CacheType, Client, MessageButton, GuildMember } from "discord.js";
+import { CommandInteraction, CacheType, Client, ButtonBuilder as MessageButton, GuildMember, ButtonStyle } from "discord.js";
 import { Embed } from "../../util/embed";
 import { calculatePermissionForRun, Timestamp } from "../../util/util";
 import Command from "../../lib/command";
@@ -34,13 +34,13 @@ export default class Invite extends Command {
         await interaction.reply({
             embeds: new Embed()
             .setTitle(`Info on ${user.user.username}`)
-            .addField(`${client.customEmojis.get("timer")} Joined Discord`, `${Timestamp(user.user.createdTimestamp, "NONE")} (${Timestamp(user.user.createdTimestamp, "R")})`)
-            .addField(`${client.customEmojis.get("right")} Joined This Server`, `${Timestamp(user.joinedTimestamp, "NONE")} (${Timestamp(user.joinedTimestamp, "R")})`)
-            .addField(`${client.customEmojis.get("art")} Role Color`, `\`${user.displayHexColor}\``)
-            .addField(`${client.customEmojis.get("secure")} Pending Verification`, `${user.pending ? "✅" : "❌"}`)
-            .addField(`${client.customEmojis.get("role")} Roles`, `${user.roles.cache.map(e => `${e}`).join(" ")}`)
-            .addField(`${client.customEmojis.get("art")} Accent Color`, `\`${user.user.hexAccentColor || "None"}\``)
-            .addField(`${client.customEmojis.get("channel")} Tag`, `\`${user.user.tag}\``)
+            .addField(`${client.customEmojis.get("fe_clock")} Joined Discord`, `${Timestamp(user.user.createdTimestamp, "NONE")} (${Timestamp(user.user.createdTimestamp, "R")})`)
+            .addField(`${client.customEmojis.get("fe_join")} Joined This Server`, `${Timestamp(user.joinedTimestamp, "NONE")} (${Timestamp(user.joinedTimestamp, "R")})`)
+            .addField(`${client.customEmojis.get("fe_paint")} Role Color`, `\`${user.displayHexColor}\``)
+            .addField(`${client.customEmojis.get("fe_verification")} Pending Verification`, `${user.pending ? "✅" : "❌"}`)
+            .addField(`${client.customEmojis.get("fe_role")} Roles`, `${user.roles.cache.map(e => `${e}`).join(" ")}`)
+            .addField(`${client.customEmojis.get("fe_fill")} Accent Color`, `\`${user.user.hexAccentColor || "None"}\``)
+            .addField(`${client.customEmojis.get("fe_channel")} Tag`, `\`${user.user.tag}\``)
             .setThumbnail(user.displayAvatarURL())
             .setFooter({
                 text: `${user.id}`,
@@ -53,11 +53,11 @@ export default class Invite extends Command {
                     components: [
                         new MessageButton()
                         .setLabel(`Avatar URL`)
-                        .setStyle(`LINK`)
+                        .setStyle(ButtonStyle.Link)
                         .setURL(user.displayAvatarURL()),
                         new MessageButton()
                         .setLabel(`Banner URL${hasBanner() ? "" : " (Disabled)"}`)
-                        .setStyle(`LINK`)
+                        .setStyle(ButtonStyle.Link)
                         .setURL(user.displayAvatarURL() || "https://discord.com/404")
                         .setDisabled(!hasBanner())
                     ]

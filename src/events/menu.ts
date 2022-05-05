@@ -14,6 +14,14 @@ export default class MenuInteractionEvent extends Event {
         if(!interaction.isContextMenuCommand()) return;
         const Menu = client.menus.find(e => e.name == interaction.commandName);
         if(!Menu) return ErrorMessage(`Menu not found...`, interaction);
+        const channel = interaction.guild == null ? null : await interaction?.guild.channels.fetch(interaction.channelId);
+
+        if(channel == null || channel?.isDMBased()){
+            return ErrorMessage(
+                `This command can only be executed in a server!`,
+                interaction
+            );
+        }
 
         //@ts-ignore
         if(!(interaction.member.permissions.has(Menu?.requiredPermissions ?? []) || interaction.member.permissions.some(Command?.somePermissions ?? []))){

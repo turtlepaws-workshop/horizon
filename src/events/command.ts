@@ -11,15 +11,19 @@ export default class InteractionCommandEvent extends Event {
     }
 
     async execute(client: Client<boolean>, interaction: Interaction): Promise<void> {
-        if(!interaction.isCommand()) return;
+        //Should be isChatInputCommand
+        if(!interaction.isChatInputCommand()) return;
         const Command = client.commands.all.find(e => e.name == interaction.commandName);
         if(!Command) return ErrorMessage(`Command not found...`, interaction);
-        if((Command.serverOnly || true) && interaction.channel.isDMBased()){
+        const channel = interaction.guild == null ? null : await interaction?.guild.channels.fetch(interaction.channelId);
+
+        if(channel == null || channel?.isDMBased()){
             return ErrorMessage(
                 `This command can only be executed in a server!`,
                 interaction
             );
         }
+        
 
         //@ts-ignore
         if(!(interaction.member.permissions.has(Command?.requiredPermissions ?? []) || interaction.member.permissions.some(Command?.somePermissions ?? []))){

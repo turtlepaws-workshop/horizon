@@ -1,5 +1,5 @@
 import { codeBlock } from "@discordjs/builders";
-import { Client, Interaction } from "discord.js";
+import { Client, GuildScheduledEventEntityType, GuildScheduledEventPrivacyLevel, Interaction } from "discord.js";
 import Event from "../lib/event"
 import { ErrorMessage, hasPermission } from "../util/util";
 
@@ -27,8 +27,8 @@ export default class InteractionAutocompleteEvent extends Event {
         const event = await interaction.guild.scheduledEvents.create({
             name: "Server Birthday",
             description: "This server's birthday!",
-            entityType: "EXTERNAL",
-            privacyLevel: "GUILD_ONLY",
+            entityType: GuildScheduledEventEntityType.External,
+            privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             scheduledStartTime: interaction.guild.createdTimestamp + 31557600000,
             entityMetadata: {
                 location: "Right here",
@@ -36,7 +36,7 @@ export default class InteractionAutocompleteEvent extends Event {
             scheduledEndTime: interaction.guild.createdTimestamp + 31557600000 + 86400000,
         });
 
-        return interaction.reply({
+        interaction.reply({
             content: `${client.customEmojis.get("check_")} Event created: ${await event.createInviteURL({
                 maxAge: 0,
                 maxUses: 0,
