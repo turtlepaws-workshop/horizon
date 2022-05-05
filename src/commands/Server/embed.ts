@@ -160,19 +160,19 @@ export default class Invite extends Command {
                     customId: v4(),
                     data: new MessageEmbed()
                         .setColor("Blurple")
-                        //@ts-ignore
-                        .setTitle(m.getTextInputValue(fieldIds.title))
-                        //@ts-ignore
-                        .setDescription(m.getTextInputValue(fieldIds.description))
+                        //@ts-expect-error
+                        .setTitle(m.fields.getTextInputValue(fieldIds.title))
+                        //@ts-expect-error
+                        .setDescription(m.fields.getTextInputValue(fieldIds.description))
                         .setURL(website)
                         .setAuthor({
-                            //@ts-ignore
-                            name: m.getTextInputValue(fieldIds.author_name),
+                            //@ts-expect-error
+                            name: m.fields.getTextInputValue(fieldIds.author_name),
                             url: website
                         })
                         .setFooter({
-                            //@ts-ignore
-                            text: m.getTextInputValue(fieldIds.footer_name)
+                            //@ts-expect-error
+                            text: m.fields.getTextInputValue(fieldIds.footer_name)
                         }),
                     userId: interaction.user.id
                 }

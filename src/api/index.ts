@@ -1,19 +1,22 @@
-import { Client, Guild } from "discord.js";
+import { Client, Colors, Guild } from "discord.js";
 import express from "express";
 import { changeSettings } from "../client/levels";
 import { GuildSettings } from "../entities/settings";
 import { API_TOKEN } from "../config/secrets.json"
 import { CustomEmbed } from "../entities/embed";
 import { AppDataSource } from "../sqlite";
+import { v4 } from "uuid";
+import { EmbedBuilder } from "@discordjs/builders";
+import { website } from "../config/config";
 
-export async function fetchRepository(){
+export async function fetchRepository() {
     return (await AppDataSource).getRepository(CustomEmbed)
 }
 
-export async function initExpress(client: Client){
+export async function initExpress(client: Client) {
     const embedRepository = await fetchRepository();
 
-    if(!API_TOKEN){
+    if (!API_TOKEN) {
         console.warn(
             "There is no API_TOKEN. This might be because you have the dashboard disabled or if you have the dashboard enabled please specify an API_TOKEN or anyone will be able to access the API."
         );
@@ -21,27 +24,37 @@ export async function initExpress(client: Client){
 
     const app = express();
 
-    app.use(async (req, res) => {
-        if(req.headers.authorization != API_TOKEN) return res.json({
+    app.use(async (req, res, next) => {
+        if (req.headers.authorization != API_TOKEN) return res.json({
             error: true,
             message: "Invalid authorization token"
         });
-        if(!client.isReady()){
+        if (!client.isReady()) {
             return res.json({
                 error: true,
                 message: "Client is not ready"
             });
         }
-        if(!client.customEmojisReady){
+        if (!client.customEmojisReady) {
             return res.json({
                 error: true,
                 message: "Emojis & other stuff are still caching, please wait..."
             });
         }
+
+        next();
+        console.log("Passing request", req.headers.authorization)
+    });
+
+    app.get("/connection", async (req, res) => {
+        res.json({
+            message: "Connection ✅",
+            error: false
+        })
     });
 
     app.get("/guilds", async (req, res) => {
-        if(!client.isReady()){
+        if (!client.isReady()) {
             res.json({
                 error: true,
                 message: "Client is not ready"
@@ -53,7 +66,8 @@ export async function initExpress(client: Client){
 
     app.get("/", async (req, res) => {
         res.json({
-            message: "hello world!"
+            message: "hello world!",
+            error: false
         });
     });
 
@@ -67,14 +81,14 @@ export async function initExpress(client: Client){
         //@ts-expect-error
         const channel = await guild.channels.fetch(req.query.channelId);
 
-        if(!channel || !channel?.isText()) {
+        if (!channel || !channel?.isText()) {
             res.json({
                 message: "Channel must be a valid text channel",
                 error: true
             });
             return;
         }
-        if(!name || !avatar || !guild){
+        if (!name || !avatar || !guild) {
             res.json({
                 message: "Missing args (possibly name, avatar, or guild)",
                 error: true
@@ -92,15 +106,15 @@ export async function initExpress(client: Client){
                 error: false,
                 data: webhook
             });
-        } catch(e) {
+        } catch (e) {
             res.json({
-                message: e.toString(),
+                data: e.toString(),
                 error: true
             });
         }
     });
 
-    app.get("/settings/cache", async (req, res) =>  {
+    app.get("/settings/cache", async (req, res) => {
         res.json({
             ...client.settingsCache.toJSON()
         });
@@ -112,12 +126,22 @@ export async function initExpress(client: Client){
         //@ts-expect-error
         const guildId: string = req.query.guildId;
 
-        await changeSettings(guildId, async (settings, repo, filter, isNull) => {
+        const updated = await changeSettings(guildId, async (settings, repo, filter, isNull) => {
             repo.update(filter(), {
                 //@ts-expect-error
                 guild_modCommands: isNull(modCommands, settings.guild_modCommands)
             });
+        }).catch(e => {
+            res.json({
+                error: true,
+                message: e.toString()
+            })
         });
+
+        res.json({
+            error: false,
+            data: updated
+        })
     });
 
     app.get("/embeds/fetch", async (req, res) => {
@@ -151,7 +175,91 @@ export async function initExpress(client: Client){
     });
 
     app.post("/embed/create", async (req, res) => {
-        //Something to get data
+        function str(str: any){
+            if(typeof str != "string") return null;
+            else return str;
+        }
+
+        const dataa = {
+            customId: v4(),
+            data: JSON.stringify(new EmbedBuilder()
+                .setColor(Colors.Blurple)
+                .setTitle(str(req.query.title))
+                .setDescription(str(req.query.description))
+                .setURL(website)
+                .setAuthor({
+                    name: str(req.query.author_name),
+                    url: website
+                })
+                .setFooter({
+                    text: str(req.query.footer_name)
+                }).toJSON()),
+            userId: str(req.query.userId)
+        }
+
+        const data = await embedRepository.save(dataa).catch(e => res.json({
+            error: true,
+            message: e.toString()
+        }));
+
+        res.json({
+            error: false,
+            data
+        });
+    });
+
+    // TypeScript Boolean
+    // ‾‾  ‾‾     ‾‾
+    function tsb(value: any){
+        if(typeof value == "string"){
+            if(value == "false") return false;
+            else if(value == "true") return true;
+        } else if(typeof value == "boolean") return value
+        else return null;
+    }
+
+    app.get("/stats", async (req, res) => {
+        try {
+            const lazyLoad = tsb(req.query.lazyLoad == null ? true : req.query.lazyLoad);
+
+            //The exact amount of users that the bot has
+            let size = 0;
+            //The members that have been counted
+            const used = [];
+    
+            if (lazyLoad == false) {
+                //This should:
+                //1. Fetch all the guilds
+                //2. Fetch the selected guild
+                //3. Fetch all the members
+                //4. Add the member to the `size` and add them to `used` so they aren't counted double
+                //This currently does not work
+                //And will not be fixed
+                //         ‾‾‾
+                for (const oguild of (await client.guilds.fetch()).values()) {
+                    const guild = await oguild.fetch();
+                    const members = guild.members.fetch();
+    
+                    for (const member of (await members).values()) {
+                        if (used.includes(member.id)) continue;
+                        used.push(member.id);
+                        size++
+                    }
+                };
+            }
+    
+            res.json({
+                guilds: (await (client.guilds.fetch())).size,
+                cacheUsers: client.users.cache.size,
+                users: lazyLoad==true ? null : size,
+                error: false
+            });
+        } catch(e){
+            res.json({
+                error: true,
+                message: e.toString()
+            })
+        }
     });
 
     app.listen(2000, () => console.log("API up on port 2000 (for local use: http://localhost:2000/)"));

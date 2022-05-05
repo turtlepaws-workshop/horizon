@@ -1,16 +1,39 @@
 # Horizon - A TS-built, open-source, multipurpose Discord bot.
 
+Thanks for checking out Horizon's Github
+
+<details open>
+  <summary>Table of Contents</summary>
+  
+  Table of Contents |
+  --- |
+  [Emoji Guilds](#emoji-guilds)
+  [Invite Link](#invite-link)
+  [Support Server](#support-server)
+  [Self Hosting](#self-hosting)
+  - [Requirements](#setup-to-do-list)
+  - [Checklist](#steps)
+  - [Config](#config)
+
+</details>
+
 ## Emoji guilds
 You can join these emoji guilds if you want to use the emojis from Horizon. You can DM me (Turtlepaw#3806) to get your self-hosted (or other) bot added.
 
-- https://discord.gg/7evbFRBHjz
-- https://discord.gg/ksNFnpqRNW
+- [Turtlepaw's Emoji Vault v1](https://discord.gg/7evbFRBHjz)
+- [Turtlepaw's Emoji Vault v2](https://discord.gg/ksNFnpqRNW)
+- [Horizon Emojis (Fluent)](https://discord.gg/sfAfn6kfkT)
+- [Horizon Emojis 2 (Fluent)](https://discord.gg/9hjjHcnZA7)
 
 ## Invite Link
-[Add to server](https://discord.com/oauth2/authorize?client_id=956747231615152188&permissions=1521157008391&scope=bot%20applications.commands)
+[
+   <img src="images/ADD_TO_SERVER.svg" style="width: 300px;">
+](https://horizon.trtle.xyz/add)
 
 ## Support Server
-You can join my hub for all my bots [here](https://discord.gg/9N8BkWzuBK). For the original bot or support on an error **in the original code**
+You can join my hub for all my bots [here](https://discord.gg/9N8BkWzuBK). For the original bot or support on an error **in the original code.**
+
+![Image](https://invidget.switchblade.xyz/834199640702320650)
 
 ## Self-hosting
 We support self-hosting the bot. Here's a quick to-do list before setting up your own bot!
