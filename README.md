@@ -1,6 +1,6 @@
 # Horizon - A TS-built, open-source, multipurpose Discord bot.
 
-Thanks for checking out Horizon's Github
+Thanks for checking out Horizon's Github!
 
 <details open>
   <summary>Table of Contents</summary>
@@ -36,7 +36,7 @@ You can join my hub for all my bots [here](https://discord.gg/9N8BkWzuBK). For t
 ![Image](https://invidget.switchblade.xyz/834199640702320650)
 
 ## Self-hosting
-We support self-hosting the bot. Here's a quick to-do list before setting up your own bot!
+We support self-hosting the bot. Here's a quick to-do list before setting up your bot!
 
 ### Setup to-do list
 Program | Requirement | Website
