@@ -14,7 +14,7 @@ export default class MenuInteractionEvent extends Event {
         if(!interaction.isContextMenuCommand()) return;
         const Menu = client.menus.find(e => e.name == interaction.commandName);
         if(!Menu) return ErrorMessage(`Menu not found...`, interaction);
-        const channel = interaction.guild == null ? null : await interaction?.guild.channels.fetch(interaction.channelId);
+        const channel = interaction.channel;
 
         if(channel == null || channel?.isDMBased()){
             return ErrorMessage(

@@ -13,4 +13,7 @@ export class User {
 
     @Column()
     birthday: number
+
+    @Column()
+    server_infractions: number
 }

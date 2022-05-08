@@ -23,12 +23,8 @@ export default class Invite extends Command {
         //@ts-ignore
         const user: GuildMember = interaction.options.getMember("user") || interaction.member;
         const hasBanner = () => {
-            try {
-                user.user.bannerURL();
-                return true;
-            } catch {
-                return false;
-            }
+            if(user.user.bannerURL() == null) return false;
+            else return true;
         }
         
         await interaction.reply({

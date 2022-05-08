@@ -12,15 +12,22 @@ import "reflect-metadata"
 import { initExpress } from "./api";
 import { GuildSettingsCache } from "./client/settings";
 import { AllIntents, AllPartials } from "./lib/all";
-const IFlags = IntentsBitField.Flags;
+const Intents = IntentsBitField.Flags;
 
 const client = new Client({
     intents: [
-        ...AllIntents({
-            guildVoice: false,
-            typing: false,
-            guildBots: false
-        })
+        Intents.DirectMessageReactions,
+        Intents.DirectMessages,
+        Intents.GuildBans,
+        Intents.GuildEmojisAndStickers,
+        Intents.GuildInvites,
+        Intents.GuildMembers,
+        Intents.GuildMessageReactions,
+        Intents.GuildMessages,
+        Intents.GuildScheduledEvents,
+        Intents.GuildWebhooks,
+        Intents.Guilds,
+        Intents.MessageContent
     ],
     partials: [
         ...AllPartials()

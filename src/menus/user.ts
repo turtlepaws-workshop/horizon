@@ -19,12 +19,8 @@ export default class UserInfoMenu extends Menu {
         //@ts-ignore
         const user: GuildMember = interaction.options.getMember("user") || interaction.member;
         const hasBanner = () => {
-            try {
-                user.user.bannerURL();
-                return true;
-            } catch {
-                return false;
-            }
+            if(user.user.bannerURL() == null) return false;
+            else return true;
         }
         const bannerURL = () => {
             try {

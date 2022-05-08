@@ -15,7 +15,7 @@ export default class InteractionCommandEvent extends Event {
         if(!interaction.isChatInputCommand()) return;
         const Command = client.commands.all.find(e => e.name == interaction.commandName);
         if(!Command) return ErrorMessage(`Command not found...`, interaction);
-        const channel = interaction.guild == null ? null : await interaction?.guild.channels.fetch(interaction.channelId);
+        const channel = interaction.channel;
 
         if(channel == null || channel?.isDMBased()){
             return ErrorMessage(

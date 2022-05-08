@@ -8,6 +8,8 @@ import { AppDataSource } from "../sqlite";
 import { v4 } from "uuid";
 import { EmbedBuilder } from "@discordjs/builders";
 import { website } from "../config/config";
+import cors from "cors";
+import https from "https";
 
 export async function fetchRepository() {
     return (await AppDataSource).getRepository(CustomEmbed)
@@ -54,15 +56,20 @@ export async function initExpress(client: Client) {
     });
 
     app.get("/guilds", async (req, res) => {
-        if (!client.isReady()) {
-            res.json({
-                error: true,
-                message: "Client is not ready"
-            })
-            return;
-        }
-        res.json(await client.guilds.fetch());
+        res.json({
+            error: false,
+            data: await client.guilds.fetch(),
+            json: (await client.guilds.fetch()).map(guild => guild.id)
+        });
     });
+
+    app.get("/guild/:id", async (req, res) => {
+        res.json({
+            error: false,
+            data: await client.guilds.fetch(req.params.id),
+            json: await client.guilds.fetch(req.params.id).then(g => g.toJSON())
+        });
+    })
 
     app.get("/", async (req, res) => {
         res.json({
@@ -163,6 +170,56 @@ export async function initExpress(client: Client) {
         });
     });
 
+    app.get("/includesBot/:id", async (req, res) => {
+        try {
+            const id = req.params.id;
+            const guild = await client.guilds.fetch(id);
+
+            res.json({
+                error: false,
+                data: guild != null
+            });
+        } catch(e){
+            res.json({
+                error: true,
+                data: false
+            });
+        }
+    });
+    
+    app.get("/hasPermissions/:id", async (req, res) => {
+        //@ts-expect-error
+        const userID: string = req.query.userID;
+        const guildID: string = req.params.id;
+
+        const guild = await client.guilds.fetch(guildID);
+        const member = await guild.members.fetch(userID);
+
+        if(member.permissions.has("Administrator") || guild.ownerId == userID) {
+            res.json({
+                error: false,
+                data: true
+            });
+        } else {
+            res.json({
+                error: false,
+                data: false
+            });
+        }
+    });
+
+    app.get("/channels/:guildId", async (req, res) => {
+        const guildId = req.params.guildId;
+        const guild = await client.guilds.fetch(guildId);
+        
+        const channels = await (await guild.channels.fetch()).map(e => e.toJSON());
+
+        res.json({
+            error: false,
+            data: channels
+        });
+    });
+
     app.get("/embed/:customId", async (req, res) => {
         const customId = req.params.customId;
         const fetch = await embedRepository.findOneBy({
@@ -219,7 +276,7 @@ export async function initExpress(client: Client) {
     }
 
     app.get("/stats", async (req, res) => {
-        try {
+        try {            
             const lazyLoad = tsb(req.query.lazyLoad == null ? true : req.query.lazyLoad);
 
             //The exact amount of users that the bot has
@@ -252,6 +309,8 @@ export async function initExpress(client: Client) {
                 guilds: (await (client.guilds.fetch())).size,
                 cacheUsers: client.users.cache.size,
                 users: lazyLoad==true ? null : size,
+                channels: client.channels.cache.size,
+                uptime: client.uptime,
                 error: false
             });
         } catch(e){

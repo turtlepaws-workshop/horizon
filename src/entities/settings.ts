@@ -35,6 +35,22 @@ export class GuildSettings {
     @Column()
     automod_filters: string //StringMap<>
 
+    /////////
+    //LOGS//
+    ////////
+    @Column()
+    logs_enabled: boolean
+    @Column()
+    logs_channel: string | null //Null means it's disabled
+
+    /////////////
+    //STARBOARD//
+    /////////////
+    @Column()
+    starboard_enabled: boolean
+    @Column()
+    starboard_channel: string | null //Null means it's disabled
+
     ///////////////////////
     //BASE GUILD SETTINGS//
     ///////////////////////

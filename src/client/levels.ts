@@ -104,7 +104,11 @@ export async function createSettings(guildId: string): Promise<GuildSettings> {
         levels_embed: false,
         levels_message: "GG {{userMention}}. You leveled up to level {{level}}!",
         levels_enabled: false,
-        levels_messageChannel: null
+        levels_messageChannel: null,
+        logs_channel: null,
+        logs_enabled: false,
+        starboard_channel: null,
+        starboard_enabled: false
     };
 
     await SettingsRepo.save(newSettings);
