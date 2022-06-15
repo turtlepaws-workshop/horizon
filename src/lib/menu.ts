@@ -1,11 +1,11 @@
-import { Client, ContextMenuCommandInteraction as ContextMenuInteraction, PermissionsString as PermissionString } from "discord.js";
+import { Client, ContextMenuCommandInteraction as ContextMenuInteraction, PermissionsString } from "discord.js";
 import { ContextMenuBuilder } from "discord.js-util";
-import { MenuOptions } from "../typings";
+import { MenuOptions, PermissionString } from "../typings";
 
 export default class Menu {
     public name: string;
     public dev: boolean;
-    public runPermissions: PermissionString[];
+    public runPermissions: PermissionsString[];
     public requiredPermissions: PermissionString[];
     public somePermissions: PermissionString[];
     public builder: ContextMenuBuilder = new ContextMenuBuilder();

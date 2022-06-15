@@ -1,7 +1,9 @@
 import { codeBlock } from "@discordjs/builders";
 import { Client, Interaction } from "discord.js";
+import { hasPermissionByArray, somePermission } from "../util/permissions";
 import Event from "../lib/event"
 import { ErrorMessage } from "../util/util";
+import { get } from "../text/manager";
 
 export default class MenuInteractionEvent extends Event {
     constructor(){
@@ -16,31 +18,33 @@ export default class MenuInteractionEvent extends Event {
         if(!Menu) return ErrorMessage(`Menu not found...`, interaction);
         const channel = interaction.channel;
 
+        client.uDB.addCommand();
+
         if(channel == null || channel?.isDMBased()){
             return ErrorMessage(
-                `This command can only be executed in a server!`,
+                await get("ServerOnly", interaction),
                 interaction
             );
         }
 
         //@ts-ignore
-        if(!(interaction.member.permissions.has(Menu?.requiredPermissions ?? []) || interaction.member.permissions.some(Command?.somePermissions ?? []))){
+        if(!(hasPermissionByArray(interaction.member, Menu?.requiredPermissions ?? []) || somePermission(interaction.member, Command?.somePermissions ?? []))){
             return ErrorMessage(
-                `Missing permissions!`,
+                await get("MissingPermissions", interaction),
                 interaction
             );
         }
 
         if(!interaction.guild.me.permissions.has(Menu.runPermissions)){
             return ErrorMessage(
-                `The bot is missing the required permissions to run this menu... Contact the admins!`,
+                await get("BotMissingPermissions", interaction),
                 interaction
             );
         }
 
         if(!client.customEmojisReady){
             return ErrorMessage(
-                `The bots emojis are caching, please wait...`,
+                await get("EmojisCaching", interaction),
                 interaction,
                 "warning",
                 true
@@ -52,7 +56,7 @@ export default class MenuInteractionEvent extends Event {
         } catch(e) {
             console.log(e);
             ErrorMessage(
-                `An unexpected error occurred!\n\n${codeBlock("js", e)}`,
+                `${await get("Error", interaction)}\n\n${codeBlock("js", e)}`,
                 interaction
             );
         }

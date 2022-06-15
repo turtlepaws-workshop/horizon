@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder } from "@discordjs/builders";
 import { APIApplicationCommandOptionChoice } from "discord-api-types/v9";
+import { ContextMenuBuilder } from "discord.js-util";
 
 export default class HorizonSlashCommandBuilder {
     public builder: SlashCommandBuilder;
@@ -103,6 +104,24 @@ export default class HorizonSlashCommandBuilder {
             .setRequired(req)
             .setDescription(description);
         });
+        return this;
+    }
+}
+
+export class ModifiedHorizonSlashCommandBuilder extends HorizonSlashCommandBuilder {
+    public dev: boolean = false;
+
+    setDeveloping(){
+        this.dev = true;
+        return this;
+    }
+}
+
+export class ModifiedContextMenuBuilder extends ContextMenuBuilder {
+    public dev: boolean = false;
+
+    setDeveloping(){
+        this.dev = true;
         return this;
     }
 }

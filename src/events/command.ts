@@ -1,7 +1,9 @@
 import { codeBlock } from "@discordjs/builders";
 import { ChannelType, Client, Interaction } from "discord.js";
+import { hasPermission, hasPermissionByArray, somePermission } from "../util/permissions";
 import Event from "../lib/event"
 import { ErrorMessage } from "../util/util";
+import { get } from "../text/manager";
 
 export default class InteractionCommandEvent extends Event {
     constructor(){
@@ -17,32 +19,34 @@ export default class InteractionCommandEvent extends Event {
         if(!Command) return ErrorMessage(`Command not found...`, interaction);
         const channel = interaction.channel;
 
+        await client.uDB.addCommand();
+
         if(channel == null || channel?.isDMBased()){
             return ErrorMessage(
-                `This command can only be executed in a server!`,
+                await get("ServerOnly", interaction),
                 interaction
             );
         }
         
 
         //@ts-ignore
-        if(!(interaction.member.permissions.has(Command?.requiredPermissions ?? []) || interaction.member.permissions.some(Command?.somePermissions ?? []))){
+        if(!(hasPermissionByArray(interaction.member, Command?.requiredPermissions ?? []) || somePermission(interaction.member, Command?.somePermissions ?? []))){
             return ErrorMessage(
-                `Missing permissions!`,
+                await get("MissingPermissions", interaction),
                 interaction
             );
         }
 
         if(!interaction.guild.me.permissions.has(Command.runPermissions)){
             return ErrorMessage(
-                `The bot is missing the required permissions to run this command... Contact the admins!`,
+                await get("BotMissingPermissions", interaction),
                 interaction
             );
         }
 
         if(!client.customEmojisReady){
             return ErrorMessage(
-                `The bots emojis are caching, please wait...`,
+                await get("EmojisCaching", interaction),
                 interaction,
                 "warning",
                 true
@@ -54,7 +58,7 @@ export default class InteractionCommandEvent extends Event {
         } catch(e) {
             console.log(e);
             ErrorMessage(
-                `An unexpected error occurred!\n\n${codeBlock("js", e)}`,
+                `${await get("Error", interaction)}\n\n${codeBlock("js", e)}`,
                 interaction
             );
         }

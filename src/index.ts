@@ -12,6 +12,10 @@ import "reflect-metadata"
 import { initExpress } from "./api";
 import { GuildSettingsCache } from "./client/settings";
 import { AllIntents, AllPartials } from "./lib/all";
+import "./lib/extends";
+import { UtilDBManager } from "./sqlite";
+import { initPlugins, usePlugin } from "./modules";
+import { setPluginVaribles } from "./client/set";
 const Intents = IntentsBitField.Flags;
 
 const client = new Client({
@@ -44,6 +48,11 @@ client.events = new Collection();
 client.customEmojis = new Collection();
 client.customEmojisReady = false;
 client.menus = new Collection();
+
+//Plugins
+initPlugins(client);
+usePlugin("BetterVerification");
+setPluginVaribles(client);
 
 //init events
 events(client);
@@ -86,6 +95,9 @@ client.on("ready", async () => {
         initLeaderboards(client);
     });
     client.settingsCache = await new GuildSettingsCache(client).init();
+
+    //Create utils
+    client.uDB = new UtilDBManager();
 });
 
 //Login with our super secret token!

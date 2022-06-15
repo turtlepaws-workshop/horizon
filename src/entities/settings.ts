@@ -34,6 +34,10 @@ export class GuildSettings {
     automod_bannedWords: string
     @Column()
     automod_filters: string //StringMap<>
+    @Column()
+    automod_links: string
+    @Column()
+    automod_links_whitelist: string
 
     /////////
     //LOGS//

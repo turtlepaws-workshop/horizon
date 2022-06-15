@@ -1,0 +1,11 @@
+{
+    "CaseCreate": "{fe_checked} Case created successfully.",
+    "CaseUpdate": "{fe_checked} Case updated successfully.",
+    "CaseDelete": "{fe_checked} Case deleted successfully.",
+    "Error": "{fec_error} An unexpected error occurred. If this problem persists join our [support server]({supportURL}).",
+    "EmojisCaching": "The bots emojis are caching, please wait...",
+    "BotMissingPermissions": "The bot is missing the required permissions to run this command... Contact the admins!",
+    "MissingPermissions": "You're missing permissions to run this command!",
+    "ServerOnly": "This command can only be executed in a server!",
+    "DefaultLevelUp": "GG {user}. You have leveled up to level {level}!"
+}

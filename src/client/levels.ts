@@ -108,7 +108,9 @@ export async function createSettings(guildId: string): Promise<GuildSettings> {
         logs_channel: null,
         logs_enabled: false,
         starboard_channel: null,
-        starboard_enabled: false
+        starboard_enabled: false,
+        automod_links: "",
+        automod_links_whitelist: ""
     };
 
     await SettingsRepo.save(newSettings);
@@ -157,7 +159,7 @@ export function parseGuildData(data: GuildSettings, client?: Client): ParsedGuil
     }
 }
 
-export async function changeSettings(guildId: string, callback: (guildSettings: GuildSettings, settingsRepository: Repository<GuildSettings>, genFilter: () => FindOptionsWhere<GuildSettings>, isNull: (val: unknown, defaultValue?: unknown) => typeof val | typeof defaultValue) => Promise<void>, client?: Client){
+export async function changeSettings(guildId: string, callback: (guildSettings: GuildSettings, settingsRepository: Repository<GuildSettings>, genFilter: () => FindOptionsWhere<GuildSettings>, isNull: (val: unknown, defaultValue?: unknown) => typeof val | typeof defaultValue, save: (ths: any) => void) => Promise<void>, client?: Client){
     const SettingsRepo = (await AppDataSource).getRepository("GuildSettings");
     const settings_ = await createSettings(guildId);
     const parsed = parseGuildData(settings_, client);
@@ -171,6 +173,8 @@ export async function changeSettings(guildId: string, callback: (guildSettings: 
         } else {
             return val == null;
         }
+    }, async (ths) => {
+        await SettingsRepo.save(ths);
     });
 }
 

@@ -19,9 +19,29 @@ export async function registerCommands(client: Client) {
         if (!command || command?.isCommand == false) continue;
 
         if(command.dev){
-            Commands1.push(command);
+            Commands1.push(command.builder);
         } else {
-            Commands2.push(command);
+            Commands2.push(command.builder);
+        }
+    }
+
+    for (const pluginR of client.plugins.values()) {
+        const plugin = new pluginR();
+        await plugin.start(client);
+        for(const Command of plugin.builders.commands){
+            if(Command.dev){
+                Commands1.push(Command);
+            } else {
+                Commands2.push(Command);
+            }
+        }
+        
+        for(const ContextMenu of plugin.builders.menus){
+            if(ContextMenu.dev){
+                Commands1.push(ContextMenu);
+            } else {
+                Commands2.push(ContextMenu);
+            }
         }
     }
 
@@ -30,9 +50,9 @@ export async function registerCommands(client: Client) {
         if (!menu) continue;
 
         if(menu.dev){
-            Commands1.push(menu);
+            Commands1.push(menu.builder);
         } else {
-            Commands2.push(menu);
+            Commands2.push(menu.builder);
         }
     }
 
@@ -40,14 +60,14 @@ export async function registerCommands(client: Client) {
     client.commands.public = Commands2;
     client.commands.all = [...Commands2, ...Commands1];
 
-    rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1.map(e => e.builder.toJSON()) })
+    rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1.map(e => e.toJSON())})
         .then((commands: ApplicationCommand[]) => {
             client.rawGuildCommands = commands
             console.log('[COMMANDS] Successfully registered application commands. (Private)');
         })
         .catch(console.error);
 
-    rest.put(Routes.applicationCommands(clientId), { body: Commands2.map(e => e.builder.toJSON()) })
+    rest.put(Routes.applicationCommands(clientId), { body: Commands2.map(e => e.toJSON())})
         .then((commands: ApplicationCommand[]) => {
             client.rawCommands = commands
             console.log('[COMMANDS] Successfully registered application commands. (Public)')

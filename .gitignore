@@ -111,3 +111,4 @@ package-lock.json
 
 # SQLite
 database.sqlite
+utils.sqlite

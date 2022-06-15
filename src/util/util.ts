@@ -22,7 +22,8 @@ function Timestamp(time: Date | number, type: TimestampStylesString | "NONE" | "
     return `<t:${unixTime(time)}${endIsNull ? "" : ":"}${end}>`
 }
 
-async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glitch" | "blob_lurk" | "warning" | "blob_think" = "warning", noEmojis: boolean = false) {
+async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glitch" | "blob_lurk" | "warning" | "blob_think" | "fe_warning" = "fe_warning", noEmojis: boolean = false) {
+    if(emoji == "warning") emoji = "fe_warning";
     if (!noEmojis) message = `${int.client.customEmojis.get(emoji)} ${message}`
     const components = [
         {
@@ -80,6 +81,10 @@ export function actionRowJSON(...components: any[]): any {
         type: ComponentType.ActionRow,
         components
     }
+}
+
+export function isVoid(value: any): boolean {
+    return value == null;
 }
 
 export {

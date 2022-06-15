@@ -1,4 +1,4 @@
-import StringMap from "src/lib/stringmap";
+import StringMap from "../lib/stringmap";
 import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from "typeorm"
 
 export interface Case {

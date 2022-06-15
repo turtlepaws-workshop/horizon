@@ -22,7 +22,7 @@ export default class InteractionAutocompleteEvent extends Event {
             .setDescription(`Thanks for adding Horizon to your server. You can start to cofigure your server at [the Horizon Dashboard](${generateDashboardURL(guild.id)}). If you require any help setting up or anything [join our Discord](${SupportServer})`)
             .build(),
             components: [
-                actionRow(true, 
+                actionRow(true,
                     new ButtonBuilder()
                     .setLabel("Configure Server")
                     .setURL(generateDashboardURL(guild.id))

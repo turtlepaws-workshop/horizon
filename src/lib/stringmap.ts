@@ -17,6 +17,30 @@ export default class StringMap<K, V> {
       //@ts-expect-error
       this._values[key] = value;
     }
+
+    return this;
+  }
+
+  get size() {
+    return Object.keys(this._values).length;
+  }
+
+  values(): V[]{
+    let values = [];
+    for (let prop in this._values) {
+      values.push(this._values[prop]);
+    }
+    return values;
+  }
+
+  keysAndValues(): { key: K; value: V }[] {
+    let keysAndValues = [];
+
+    for (let prop in this._values) {
+      keysAndValues.push({ key: prop, value: this._values[prop] });
+    }
+
+    return keysAndValues;
   }
 
   exists(key: K) {

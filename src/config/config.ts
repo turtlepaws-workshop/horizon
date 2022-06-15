@@ -19,3 +19,6 @@ export const Logs: HorizonLogs = {
 export function generateDashboardURL(guildId: string){
     return `${website}guilds/${guildId}`;
 }
+export const Developers = [
+    "820465204411236362"
+];
