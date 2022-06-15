@@ -5,13 +5,13 @@ Thanks for checking out Horizon's Github! Here you can find the [emoji guilds](#
 <details>
   <summary>📃 Table of Contents</summary>
   
-  > - *[Emoji Guilds](#emoji-guilds)*
-  > - *[Invite Link](#invite-link)*
-  > - *[Support Server](#support-server)*
-  > - *[Self Hosting](#self-hosting)*
->     - *[Prerequisites](#prerequisites)*
->     - *[Installation](#installation)*
->     - *[Configuration](#config)*
+  > - [Emoji Guilds](#emoji-guilds)
+  > - [Invite Link](#invite-link)
+  > - [Support Server](#support-server)
+  > - [Self Hosting](#self-hosting)
+>     - [Prerequisites](#prerequisites)
+>     - [Installation](#installation)
+>     - [Configuration](#config)
 
 </details>
 
