@@ -5,15 +5,13 @@ Thanks for checking out Horizon's Github!
 <details open>
   <summary>Table of Contents</summary>
   
-  Table of Contents |
-  --- |
-  [Emoji Guilds](#emoji-guilds)
-  [Invite Link](#invite-link)
-  [Support Server](#support-server)
-  [Self Hosting](#self-hosting)
-  - [Requirements](#setup-to-do-list)
-  - [Checklist](#steps)
-  - [Config](#config)
+  - [Emoji Guilds](#emoji-guilds)
+  - [Invite Link](#invite-link)
+  - [Support Server](#support-server)
+  - [Self Hosting](#self-hosting)
+    - [Requirements](#setup-to-do-list)
+    - [Checklist](#steps)
+    - [Config](#config)
 
 </details>
 
@@ -31,25 +29,25 @@ You can join these emoji guilds if you want to use the emojis from Horizon. You 
 ](https://horizon.trtle.xyz/add)
 
 ## Support Server
-You can join my hub for all my bots [here](https://discord.gg/9N8BkWzuBK). For the original bot or support on an error **in the original code.**
+You can join my hub for all my bots [here](https://discord.gg/9N8BkWzuBK). For the original bot or support on an error in the code.
 
 ![Image](https://invidget.switchblade.xyz/834199640702320650)
 
 ## Self-hosting
 We support self-hosting the bot. Here's a quick to-do list before setting up your bot!
 
-### Setup to-do list
-Program | Requirement | Website
+### Prerequisites
+Software | Version | Homepage
 --- | --- | ---
 Node | v16.6.0 | [nodejs.org](https://nodejs.org)
 Discord.js | v13 (soon v14) | [discord.js.org](https://discord.js.org)
 
-### Steps
-Step | Step Value | Code
+### Installation
+Step | Description | Command/Code
 --- | --- | ---
 1 | Clone the repo | `git clone https://github.com/turtlepaws-workshop/horizon.git`
-2 | Install typescript | `npm install -g typescript`
-3 | Install all modules | `npm install`
+2 | Install typescript | `yarn add -g typescript`
+3 | Install all modules | `yarn`
 4 | Create a file called `secrets.json` in `src/config` (full URL: `./src/config/secrets.json`) and edit it | [Example](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/secrets.example.json)
 5 | Optionally, you can edit the [config.js file](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/config.js)
 6 | Run the code ✨ | `npm run buildAndRun` or in vscode <kbd>F5</kbd> -> <kbd>Run Dist & TS</kbd>
@@ -62,4 +60,5 @@ Key | Value | From | Required
 `clientId` | Your bot's clientId | You can get this from [Discord's Developer Portal](https://discord.com/developers/applications) | true
 `API_TOKEN` | Your API token for the [dashboard](https://github.com/turtlepaw/horizon-dashboard) | You can generate one from [passwordsgenerator.net](https://passwordsgenerator.net/) | If you have the dashboard enabled
 
-There are also [optional](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/config.ts) config settings for your bot.
+> **Note**
+> There are also [optional](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/config.ts) config settings for your bot.
