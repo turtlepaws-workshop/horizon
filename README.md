@@ -61,4 +61,5 @@ Key | Value | From | Required
 `API_TOKEN` | Your API token for the [dashboard](https://github.com/turtlepaw/horizon-dashboard) | You can generate one from [passwordsgenerator.net](https://passwordsgenerator.net/) | If you have the dashboard enabled
 
 > **Note**
+>
 > There are also [optional](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/config.ts) config settings for your bot.
