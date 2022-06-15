@@ -1,17 +1,17 @@
 # Horizon - A TS-built, open-source, multipurpose Discord bot.
 
-Thanks for checking out Horizon's Github!
+Thanks for checking out Horizon's Github! Here you can find the [emoji guilds](#emoji-guilds), [support server](#support-server), and [self-hosting guide](#self-hosting), have fun!
 
-<details open>
-  <summary>Table of Contents</summary>
+<details>
+  <summary>📃 Table of Contents</summary>
   
-  - [Emoji Guilds](#emoji-guilds)
-  - [Invite Link](#invite-link)
-  - [Support Server](#support-server)
-  - [Self Hosting](#self-hosting)
-    - [Requirements](#setup-to-do-list)
-    - [Checklist](#steps)
-    - [Config](#config)
+  > - [Emoji Guilds](#emoji-guilds)
+  > - [Invite Link](#invite-link)
+  > - [Support Server](#support-server)
+  > - [Self Hosting](#self-hosting)
+>     - [Prerequisites](#prerequisites)
+>     - [Installation](#installation)
+>     - [Configuration](#config)
 
 </details>
 
