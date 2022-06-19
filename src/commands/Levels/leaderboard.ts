@@ -41,7 +41,7 @@ export default class Invite extends Command {
                 interaction
             );
         }
-        if(channel != null && !channel.isText()){
+        if(channel != null && !channel.isTextBased()){
             return ErrorMessage(
                 "The channel you selected is not a text channel...",
                 interaction

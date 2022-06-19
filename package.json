@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf dist/ & tsc",
     "run": "node ./dist/index.js",
-    "buildAndRun": "npm run build && npm run run"
+    "dev": "npm run build && npm run run"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "@types/uuid": "^8.3.4",
     "canvacord": "^5.2.3",
     "canvas": "^2.9.1",
+    "colors": "^1.4.0",
     "cors": "^2.8.5",
     "discord-modals": "^1.3.2",
     "discord-xp": "^1.1.16",
@@ -43,6 +44,7 @@
     "jest": "^27.5.1",
     "klaw-sync": "^6.0.0",
     "mongoose": "^6.2.8",
+    "paintfordiscord": "^1.0.3",
     "phisherman.js": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",

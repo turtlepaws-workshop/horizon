@@ -1,3 +1,4 @@
+import "colors";
 import { Client, Collection, IntentsBitField, Partials } from "discord.js";
 import emojiManager from "./client/emojiManager";
 import events from "./client/events";
@@ -16,7 +17,11 @@ import "./lib/extends";
 import { UtilDBManager } from "./sqlite";
 import { initPlugins, usePlugin } from "./modules";
 import { setPluginVaribles } from "./client/set";
+import { useAciiMessage } from "./util/aciiMessage";
 const Intents = IntentsBitField.Flags;
+
+//log acii message
+useAciiMessage();
 
 const client = new Client({
     intents: [
@@ -76,13 +81,13 @@ client.on("ready", async () => {
     //Request commands on Discord API
     await registerCommands(client);
     //Log that the bots ready
-    console.log(`[CLIENT] Ready as ${client.user.username}...`)
+    console.log(`[CLIENT] Ready as ${client.user.username}...`.blue)
     //Wait for client to be FULLY ready (for emojis, caches, etc...)
     setTimeout(async () => {
         //Init emoji manager
         await emojiManager(client);
         //Log that they are ready
-        console.log(`[CLIENT] Emojis ready`)
+        console.log(`[CLIENT] Emojis ready`.blue)
         //Update client status
         client.customEmojisReady = true;
         //init api

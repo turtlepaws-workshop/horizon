@@ -34,4 +34,6 @@ export default function (client: Client) {
             }
         }
     }
+
+    console.log("[EVENTS] Events loaded...".blue)
 }

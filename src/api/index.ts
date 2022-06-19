@@ -88,7 +88,7 @@ export async function initExpress(client: Client) {
         //@ts-expect-error
         const channel = await guild.channels.fetch(req.query.channelId);
 
-        if (!channel || !channel?.isText()) {
+        if (!channel || !channel?.isTextBased()) {
             res.json({
                 message: "Channel must be a valid text channel",
                 error: true
@@ -104,9 +104,10 @@ export async function initExpress(client: Client) {
         }
 
         try {
-            const webhook = await channel.createWebhook(name, {
+            const webhook = await channel.createWebhook({
                 avatar,
-                reason: "Created from dashboard"
+                reason: "Created from dashboard",
+                name
             });
 
             res.json({
@@ -321,5 +322,5 @@ export async function initExpress(client: Client) {
         }
     });
 
-    app.listen(2000, () => console.log("API up on port 2000 (for local use: http://localhost:2000/)"));
+    app.listen(8000, () => console.log("API up on port 2000 (for local use: http://localhost:2000/)".blue));
 }

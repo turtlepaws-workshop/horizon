@@ -1,4 +1,4 @@
-import { Channel, Client, Guild, GuildMember, HexColorString, Message, Attachment as MessageAttachment, EmbedBuilder as MessageEmbed, User } from "discord.js";
+import { Channel, Client, Guild, GuildMember, HexColorString, Message, Attachment as MessageAttachment, EmbedBuilder as MessageEmbed, User, Attachment } from "discord.js";
 import TypeormDiscordXp from "discord-xp-typeorm";
 import { MessageModel, Model } from ".././models/messages";
 export const defaultMessageLevel = 50;
@@ -15,6 +15,7 @@ import StringSet, { parseStringSet } from ".././lib/StringSet";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { User as UserEntity } from "../entities/user";
 import { ALLOWED_EXTENSIONS } from "@discordjs/rest";
+import { generateLeaderboard as createLeaderboard } from "paintfordiscord";
 let XPLevels: TypeormDiscordXp;
 
 //https://www.npmjs.com/package/discord-xp
@@ -201,7 +202,7 @@ export async function generateRankCard(member: GuildMember) {
         .setDiscriminator(member.user.discriminator)
         .build({ });
 
-    return new MessageAttachment(rankCard, "Rank.png");
+    return rankCard;
 }
 
 export async function generateLeaderboard(guild: Guild){
@@ -212,87 +213,18 @@ export async function generateLeaderboard(guild: Guild){
     //Return if there's no leaderboard
     if(!users) return false;
 
-    //Load all files
-    const backgroundFile = "./src/Images/background.png";
-    const backgroundFileAvatar = "./src/Images/avatar_background.png";
-    const backgroundAvatar = await Canvas.loadImage(backgroundFileAvatar);
-    const background = await Canvas.loadImage(backgroundFile);
+    const dUsers = await guild.members.fetch();
+    const img = await createLeaderboard(users.map(e => {
+        const user = dUsers.get(e.userID);
+        return ({
+            score: e.level,
+            username: user.user.username,
+            avatarURL: user.avatarURL(),
+            nickname: user.nickname
+        })
+    }));
 
-    //Apply text function from https://discordjs.guide/
-    const applyText = (canvas, text) => {
-        const context = canvas.getContext('2d');
-        let fontSize = 70;
-
-        do {
-            context.font = `${fontSize -= 10}px sans-serif`;
-        } while (context.measureText(text).width > canvas.width - 300);
-
-        return context.font;
-    };
-    
-    //Create canvas
-    const canvas = Canvas.createCanvas(700, 1250);
-    const context = canvas.getContext('2d');
-
-    //Draw background
-    context.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-    //I have no idea what this is...
-    // context.strokeStyle = '#0099ff';
-    // context.strokeRect(0, 0, canvas.width, canvas.height);
-    //...
-
-    //These are the positions of where the avatars or names should go
-    const poses = {
-        0: { text: 91, avatar: 25.7 },
-        1: { text: 341, avatar: 275.7 },
-        2: { text: 591, avatar: 525.7 },
-        3: { text: 841, avatar: 775.7 },
-        4: { text: 1091, avatar: 1025.7 },
-        "defualt": { avatar: { x: 24.2, w: 199.9, h: 198.7 }, text: { x: 260.6, w: 380.2, h: 68 } }
-    }
-    //This is the current position that its drawing on
-    let pos = 0;
-    //Run a for loop for all the users of the leaderboard
-    for (const user of users) {
-        //Fetch the user using discord.js
-        const dUser = await guild.client.users.fetch(user.userID);
-        //Fetch the member object too
-        const dMember = await guild.members.fetch(user.userID);
-
-        //Get the position that its drawing
-        const posData = poses[pos];
-
-        //Paint their nickname, username, or no name
-        const availbleUsername = dMember != null ? (dMember?.nickname || dUser?.username) : "Unknown user";
-
-        //Add their username or nickname
-        context.font = applyText(canvas, `${availbleUsername}`);
-        //Select the text color
-        context.fillStyle = '#ffffff';
-        //Paint it on
-        context.fillText(`${availbleUsername}`, poses.defualt.text.x, posData.text);
-
-        //Load the avatar. If the user does not exist use a discord one
-        const avatar = await Canvas.loadImage(dMember == null ? "https://cdn.discordapp.com/embed/avatars/0.png" : dMember.displayAvatarURL({ extension: 'png' }));
-
-        //Draw the avatar
-        context.save()
-        context.beginPath();
-        context.arc(poses.defualt.avatar.x + 100, posData.avatar + 100, 100, 0, Math.PI * 2, true)
-        context.closePath()
-        context.clip()
-        context.drawImage(backgroundAvatar, poses.defualt.avatar.x, posData.avatar, poses.defualt.avatar.w, poses.defualt.avatar.h);
-        context.drawImage(avatar, poses.defualt.avatar.x, posData.avatar, poses.defualt.avatar.w, poses.defualt.avatar.h);
-        context.restore()
-        //...
-
-        //Move to the next position
-        pos++
-    }
-
-    //Return the image as a MessageAttachment
-    return new MessageAttachment(canvas.toBuffer(), 'leaderboard.png');
+    return img;
 }
 
 //xp: the xp to subtract from their xp

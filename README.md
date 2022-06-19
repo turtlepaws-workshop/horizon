@@ -62,3 +62,9 @@ Key | Value | From | Required
 
 > **Note**
 > There are also [optional](https://github.com/turtlepaws-workshop/horizon/blob/main/src/config/config.ts) config settings for your bot.
+
+## Changelog
+### 6/19/2022
+* Fix support for Discord.js v14
+* Add ascii art on startup
+* Add [paintfordiscord](https://npm.im/paintfordiscord)

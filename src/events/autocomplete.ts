@@ -1,7 +1,7 @@
 import { codeBlock } from "@discordjs/builders";
-import { Client, Interaction } from "discord.js";
+import { Client, Interaction, InteractionType } from "discord.js";
 import Event from "../lib/event"
-import { ErrorMessage } from "../util/util";
+import { ErrorMessage, isAutocomplete } from "../util/util";
 
 export default class InteractionAutocompleteEvent extends Event {
     constructor(){
@@ -11,7 +11,7 @@ export default class InteractionAutocompleteEvent extends Event {
     }
 
     async execute(client: Client<boolean>, interaction: Interaction): Promise<void> {
-        if(!interaction.isAutocomplete()) return;
+        if(!isAutocomplete(interaction)) return;
         const Command = client.commands.all.find(e => e.name == interaction.commandName);
         if(!Command) return;
 

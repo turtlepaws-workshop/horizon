@@ -130,7 +130,6 @@ export default class Invite extends Command {
 
         console.log(currentSettings)
         console.log("editing message")
-        //@ts-expect-error
         const message: Message = await interaction.editReply({
             embeds: new Embed()
             .setTitle(`This server's settings`)

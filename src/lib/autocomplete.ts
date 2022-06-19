@@ -59,7 +59,6 @@ class AutocompleteHelper {
 export async function handleAutocomplete(interaction: AutocompleteInteraction, array: (Autocomplete | string)[], valueShouldBeUpperCase?: boolean) {
     const query = interaction.options.getFocused();
     if(array == null) {
-        //@ts-expect-error
         const autocomplete = new AutocompleteHelper(query, []);
         return await autocomplete.replyToInteraction(interaction, valueShouldBeUpperCase);
     }

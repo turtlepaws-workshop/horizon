@@ -216,7 +216,7 @@ export default class Invite extends Command {
                 );
             }
 
-            if(!channel.isText()){
+            if(!channel.isTextBased()){
                 return ErrorMessage(
                     `The channel must be a text channel!`,
                     interaction,

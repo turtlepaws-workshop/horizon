@@ -20,7 +20,7 @@ export default class Invite extends Command {
     async execute(interaction: CommandInteraction<CacheType>, client: Client<boolean>): Promise<void> {
         const permisisonsRequired = calculatePermissionForRun(client);
         const r_ = client.customEmojis.get("fe_warning");
-        const botMe = interaction.guild.me;
+        const botMe = interaction.guild.members.me;
         function needsPermission(permission: PermissionString){
             return permisisonsRequired.has(permission);
         }

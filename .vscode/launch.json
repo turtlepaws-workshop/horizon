@@ -31,7 +31,7 @@
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "run", "buildAndRun"
+                "run", "dev"
             ],
         }
     ]

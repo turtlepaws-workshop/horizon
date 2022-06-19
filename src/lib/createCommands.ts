@@ -63,14 +63,14 @@ export async function registerCommands(client: Client) {
     rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1.map(e => e.toJSON())})
         .then((commands: ApplicationCommand[]) => {
             client.rawGuildCommands = commands
-            console.log('[COMMANDS] Successfully registered application commands. (Private)');
+            console.log('[COMMANDS] Successfully registered application commands. (Private)'.blue);
         })
         .catch(console.error);
 
     rest.put(Routes.applicationCommands(clientId), { body: Commands2.map(e => e.toJSON())})
         .then((commands: ApplicationCommand[]) => {
             client.rawCommands = commands
-            console.log('[COMMANDS] Successfully registered application commands. (Public)')
+            console.log('[COMMANDS] Successfully registered application commands. (Public)'.blue)
         })
         .catch(console.error);
 }

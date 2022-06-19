@@ -30,8 +30,9 @@ export default class Invite extends Command {
         //@ts-ignore
         const channel: TextChannel = interaction.channel;
 
-        const webhook = await channel.createWebhook("Captain hook", {
-            reason: `Created by ${interaction.user.tag}`
+        const webhook = await channel.createWebhook({
+            reason: `Created by ${interaction.user.tag}`,
+            name: 'Captain hook'
         });
 
         await interaction.reply({

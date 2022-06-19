@@ -37,7 +37,7 @@ export default class InteractionCommandEvent extends Event {
             );
         }
 
-        if(!interaction.guild.me.permissions.has(Command.runPermissions)){
+        if(!interaction.guild.members.me.permissions.has(Command.runPermissions)){
             return ErrorMessage(
                 await get("BotMissingPermissions", interaction),
                 interaction

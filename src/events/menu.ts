@@ -35,7 +35,7 @@ export default class MenuInteractionEvent extends Event {
             );
         }
 
-        if(!interaction.guild.me.permissions.has(Menu.runPermissions)){
+        if(!interaction.guild.members.me.permissions.has(Menu.runPermissions)){
             return ErrorMessage(
                 await get("BotMissingPermissions", interaction),
                 interaction
