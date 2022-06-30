@@ -54,6 +54,8 @@ export class GuildSettings {
     starboard_enabled: boolean
     @Column()
     starboard_channel: string | null //Null means it's disabled
+    @Column()
+    starboard_threshold: number;
 
     ///////////////////////
     //BASE GUILD SETTINGS//

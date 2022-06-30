@@ -9,7 +9,7 @@ import { generateId } from "../../lib/ID";
 import { inspect } from "util";
 import { clean } from "../../util/eval";
 
-export default class Invite extends Command {
+export default class Execute extends Command {
     constructor() {
         super({
             commandBuilder: new HorizonSlashCommandBuilder()
@@ -19,7 +19,8 @@ export default class Invite extends Command {
                 "Developer"
             ],
             runPermissions: [],
-            somePermissions: []
+            somePermissions: [],
+            category: "Developer"
         });
     }
 

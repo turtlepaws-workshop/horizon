@@ -53,7 +53,8 @@ export default class Invite extends Command {
                 "ManageGuild",
                 "ManageMessages",
                 "ManageChannels"
-            ]
+            ],
+            category: "Server"
         });
     }
 

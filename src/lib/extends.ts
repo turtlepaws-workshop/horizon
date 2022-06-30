@@ -10,6 +10,48 @@ export async function fetchSettings(guildId: string) {
     return result;
 };
 
-export function fetchSettingsCache(guildId: string, client: Client){
+export function fetchSettingsCache(guildId: string, client: Client) {
     return client.settingsCache.get(guildId);
+}
+
+export class GSettings {
+    static async fetch(guildId: string) {
+        return await fetchSettings(guildId);
+    }
+
+    static async set(guildId: string, setting: string) {
+        const r = (await AppDataSource).getRepository(GuildSettings);
+        const result = await r.findOneBy({
+            guildId
+        });
+        if (result) {
+            result[setting] = true;
+            return await r.save(result);
+        }
+        return result;
+    }
+
+    static async massEdit(guildId: string, settings: GuildSettings) {
+        const r = (await AppDataSource).getRepository(GuildSettings);
+        let result = await r.findOneBy({
+            guildId
+        });
+        if (result) {
+            result = {
+                ...settings,
+                ...result
+            };
+
+            return await r.save(result);
+        }
+        return result;
+    }
+
+    static async reset(guildId: string) {
+        const r = (await AppDataSource).getRepository(GuildSettings);
+        const result = await r.delete({
+            guildId
+        });
+        return;
+    }
 }

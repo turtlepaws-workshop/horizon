@@ -2,9 +2,12 @@ import { Client, Interaction, Message } from "discord.js";
 import { SupportServer, website } from "../config/config";
 import Text from "./text.json";
 
+function disableEmbed(link: string) {
+    return `<${link}>`;
+}
 const customPlaceholders = {
-    "{supportURL}": SupportServer,
-    "{websiteURL}": website
+    "{supportURL}": disableEmbed(SupportServer), //<> disables the embed
+    "{websiteURL}": disableEmbed(website)
 };
 
 export type TextCategory = keyof typeof Text;

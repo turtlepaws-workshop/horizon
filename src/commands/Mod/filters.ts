@@ -15,7 +15,6 @@ import StringMap, { parseStringMap } from "../../lib/stringmap";
 import { APIApplicationCommandOptionChoice } from "discord-api-types/v9";
 import { handleAutocomplete } from "../../lib/autocomplete";
 import { fetchSettings } from "../../lib/extends";
-import { createArrayBindingPattern, GenericType, Map } from "typescript";
 
 /////////
 //TYPES//
@@ -36,7 +35,7 @@ enum SubcommandGroup {
     FilterAdd = "add"
 }
 
-export default class Invite extends Command {
+export default class Filters extends Command {
     constructor() {
         const filters: APIApplicationCommandOptionChoice<string>[] = [
             {
@@ -152,7 +151,8 @@ export default class Invite extends Command {
             somePermissions: [
                 "ManageMessages",
                 "ManageGuild"
-            ]
+            ],
+            category: "Mod"
         });
     }
 

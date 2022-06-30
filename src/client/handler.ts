@@ -1,11 +1,10 @@
-//new command handler needed
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { token, clientId } from "../config/secrets.json";
 import { TestGuild } from "../config/config";
 import { ApplicationCommand, Client } from "discord.js";
 import klawSync from "klaw-sync";
-import Command from "./command";
+import Command from "../lib/command";
 
 export async function registerCommands(client: Client) {
     const rest = new REST({ version: '9' }).setToken(token);
@@ -20,7 +19,7 @@ export async function registerCommands(client: Client) {
         const command = new rCommand.default();
         if (!command || command?.isCommand == false) continue;
 
-        if(command.dev){
+        if (command.dev) {
             Commands1.push(command);
         } else {
             Commands2.push(command);
@@ -30,19 +29,19 @@ export async function registerCommands(client: Client) {
     for (const pluginR of client.plugins.values()) {
         const plugin = new pluginR();
         await plugin.start(client);
-        for(const Command of plugin.builders.commands){
-            if(Command.dev){
-                Commands1.push(Command);
+        for (const Command of plugin.builders.commands) {
+            if (Command.dev) {
+                ///Commands1.push(Command);
             } else {
-                Commands2.push(Command);
+                ///Commands2.push(Command);
             }
         }
-        
-        for(const ContextMenu of plugin.builders.menus){
-            if(ContextMenu.dev){
-                Commands1.push(ContextMenu);
+
+        for (const ContextMenu of plugin.builders.menus) {
+            if (ContextMenu.dev) {
+                //Commands1.push(ContextMenu);
             } else {
-                Commands2.push(ContextMenu);
+                //Commands2.push(ContextMenu);
             }
         }
     }
@@ -51,7 +50,7 @@ export async function registerCommands(client: Client) {
         const menu = MenuFile;
         if (!menu) continue;
 
-        if(menu.dev){
+        if (menu.dev) {
             Commands1.push(menu);
         } else {
             Commands2.push(menu);
@@ -62,14 +61,14 @@ export async function registerCommands(client: Client) {
     client.commands.public = Commands2;
     client.commands.all = [...Commands2, ...Commands1];
 
-    rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1.map(e => e.builder.toJSON())})
+    rest.put(Routes.applicationGuildCommands(clientId, TestGuild), { body: Commands1.map(e => e.builder.toJSON()) })
         .then((commands: ApplicationCommand[]) => {
             client.rawGuildCommands = commands
             console.log('[COMMANDS] Successfully registered application commands. (Private)'.blue);
         })
         .catch(console.error);
 
-    rest.put(Routes.applicationCommands(clientId), { body: Commands2.map(e => e.builder.toJSON())})
+    rest.put(Routes.applicationCommands(clientId), { body: Commands2.map(e => e.builder.toJSON()) })
         .then((commands: ApplicationCommand[]) => {
             client.rawCommands = commands
             console.log('[COMMANDS] Successfully registered application commands. (Public)'.blue)

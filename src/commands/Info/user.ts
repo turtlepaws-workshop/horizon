@@ -6,7 +6,7 @@ import Command from "../../lib/command";
 import SlashCommandOptionBuilder from "../../lib/optionBuilder";
 import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 
-export default class Invite extends Command {
+export default class UserInfo extends Command {
     constructor(){
         super({
             commandBuilder: new HorizonSlashCommandBuilder()
@@ -16,6 +16,7 @@ export default class Invite extends Command {
             requiredPermissions: [],
             runPermissions: [],
             somePermissions: [],
+            category: "Info"
         });
     }
 

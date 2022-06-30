@@ -50,6 +50,7 @@
     "sqlite3": "^5.0.2",
     "string-map": "^0.0.5",
     "typeorm": "^0.3.4",
+    "utilsfordiscordjs": "^1.0.8",
     "uuid": "^8.3.2"
   }
 }

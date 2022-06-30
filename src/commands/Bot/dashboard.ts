@@ -6,7 +6,7 @@ import Command from "../../lib/command";
 import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 import { generateDashboardURL, website } from "../../config/config";
 
-export default class Invite extends Command {
+export default class Dashboard extends Command {
     constructor(){
         super({
             commandBuilder: new HorizonSlashCommandBuilder()
@@ -14,7 +14,8 @@ export default class Invite extends Command {
             .setDescription("Get a link to your dashboard."),
             requiredPermissions: [],
             runPermissions: [],
-            somePermissions: []
+            somePermissions: [],
+            category: "Bot"
         });
     }
 

@@ -23,7 +23,8 @@ export default class Invite extends Command {
                 "Administrator"
             ],
             runPermissions: [],
-            somePermissions: []
+            somePermissions: [],
+            category: "Server"
         });
     }
 

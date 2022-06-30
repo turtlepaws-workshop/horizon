@@ -110,6 +110,7 @@ export async function createSettings(guildId: string): Promise<GuildSettings> {
         logs_enabled: false,
         starboard_channel: null,
         starboard_enabled: false,
+        starboard_threshold: 5,
         automod_links: "",
         automod_links_whitelist: ""
     };

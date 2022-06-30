@@ -26,15 +26,18 @@ export default class InteractionAutocompleteEvent extends Event {
                     new ButtonBuilder()
                     .setLabel("Configure Server")
                     .setURL(generateDashboardURL(guild.id))
-                    .setStyle(ButtonStyle.Link),
+                    .setStyle(ButtonStyle.Link)
+                    .setEmoji(client.customEmojis.get("ca_edit").Discordjs),
                     new ButtonBuilder()
                     .setLabel("Support")
                     .setURL(SupportServer)
-                    .setStyle(ButtonStyle.Link),
+                    .setStyle(ButtonStyle.Link)
+                    .setEmoji(client.customEmojis.get("ca_book").Discordjs),
                     new ButtonBuilder()
                     .setLabel("Learn More")
                     .setURL(website)
                     .setStyle(ButtonStyle.Link)
+                    .setEmoji(client.customEmojis.get("ca_school").Discordjs)
                 )
             ]
         });

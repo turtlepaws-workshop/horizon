@@ -3,6 +3,7 @@ import { Client, EmbedBuilder as MessageEmbed, PermissionsString } from "discord
 import { ContextMenuBuilder, ContextMenuType } from "discord.js-util";
 import Event from "../lib/event";
 import HorizonSlashCommandBuilder from "../lib/SlashCommandBuilder";
+import { Categories } from "./types";
 
 export type ModifiedContextMenuBuilder = any;
 export type ModifiedHorizonSlashCommandBuilder = any;
@@ -80,6 +81,7 @@ export interface CommandOptions {
      * If the command can only be run in servers and not DMs.
      */
     serverOnly?: boolean;
+    category: Categories;
 }
 
 export interface MenuOptions {

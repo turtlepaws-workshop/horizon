@@ -12,7 +12,7 @@ import { website } from "../../config/config";
 import { generateRankCard } from "../../client/levels";
 import { hasLevels } from "../../client/settings";
 
-export default class Invite extends Command {
+export default class Rank extends Command {
     constructor() {
         super({
             commandBuilder: new HorizonSlashCommandBuilder()
@@ -24,7 +24,8 @@ export default class Invite extends Command {
                 ),
             requiredPermissions: [],
             runPermissions: [],
-            somePermissions: []
+            somePermissions: [],
+            category: "Levels"
         });
     }
 

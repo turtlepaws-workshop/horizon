@@ -22,7 +22,8 @@ export default class Invite extends Command {
             runPermissions: [
                 "ManageWebhooks"
             ],
-            somePermissions: []
+            somePermissions: [],
+            category: "Server"
         });
     }
 

@@ -41,7 +41,7 @@ enum SubcommandGroup {
     FilterAdd = "add"
 }
 
-export default class Invite extends Command {
+export default class Cases extends Command {
     constructor() {
         const filters: APIApplicationCommandOptionChoice<string>[] = [
             {
@@ -96,7 +96,8 @@ export default class Invite extends Command {
             somePermissions: [
                 "ManageMessages",
                 "ManageGuild"
-            ]
+            ],
+            category: "Mod"
         });
     }
 

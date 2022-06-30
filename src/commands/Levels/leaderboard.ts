@@ -11,7 +11,7 @@ import { EmbedModel } from "../../typings/index";
 import { website } from "../../config/config";
 import { addLeaderboardMessage, generateLeaderboard, generateRankCard } from "../../client/levels";
 
-export default class Invite extends Command {
+export default class Leaderboard extends Command {
     constructor() {
         super({
             commandBuilder: new HorizonSlashCommandBuilder()
@@ -23,7 +23,8 @@ export default class Invite extends Command {
                 ),
             requiredPermissions: [],
             runPermissions: [],
-            somePermissions: []
+            somePermissions: [],
+            category: "Levels"
         });
     }
 

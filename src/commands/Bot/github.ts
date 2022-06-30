@@ -5,7 +5,7 @@ import { calculatePermissionForRun } from "../../util/util";
 import Command from "../../lib/command";
 import HorizonSlashCommandBuilder from "../../lib/SlashCommandBuilder";
 
-export default class Invite extends Command {
+export default class Github extends Command {
     constructor(){
         super({
             commandBuilder: new HorizonSlashCommandBuilder()
@@ -13,7 +13,8 @@ export default class Invite extends Command {
             .setDescription("View our github!"),
             requiredPermissions: [],
             runPermissions: [],
-            somePermissions: []
+            somePermissions: [],
+            category: "Bot"
         });
     }
 

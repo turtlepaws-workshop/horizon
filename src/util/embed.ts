@@ -1,9 +1,10 @@
-import { APIEmbedField, EmbedBuilder as MessageEmbed } from "discord.js";
+import { APIEmbed, APIEmbedField, EmbedBuilder as MessageEmbed, EmbedData } from "discord.js";
 import { Color } from "../config/config";
 
 export class Embed extends MessageEmbed {
-    constructor(){
-        super();
+    constructor(data?: Embed){
+        if(data != null) super(data.toJSON());
+        else super();
 
         this.setColor(Color);
     }

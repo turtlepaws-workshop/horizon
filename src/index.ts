@@ -5,7 +5,7 @@ import events from "./client/events";
 import menus from "./client/menus";
 import { token } from "./config/secrets.json";
 import Command from "./lib/command";
-import { registerCommands } from "./lib/createCommands";
+import { registerCommands } from "./client/handler";
 import { init } from "discord-modals";
 import initLevels from "./client/levels";
 import initLeaderboards from "./client/leaderboards";

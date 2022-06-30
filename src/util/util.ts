@@ -5,6 +5,7 @@ import { TimestampStylesString } from "@discordjs/builders";
 import { APIInteractionGuildMember } from "discord-api-types/v9";
 import { APIActionRowComponent } from "discord-api-types/v10";
 import { APIMessageActionRowComponent } from "discord-api-types/v9";
+import filesystem from "fs";
 
 export type isComponentTypes = ButtonInteraction | SelectMenuInteraction;
 
@@ -32,8 +33,8 @@ function Timestamp(time: Date | number, type: TimestampStylesString | "NONE" | "
     return `<t:${unixTime(time)}${endIsNull ? "" : ":"}${end}>`
 }
 
-async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glitch" | "blob_lurk" | "warning" | "blob_think" | "fe_warning" = "fe_warning", noEmojis: boolean = false) {
-    if(emoji == "warning") emoji = "fe_warning";
+async function ErrorMessage(message: string, int: Interaction, emoji: "blob_glitch" | "blob_lurk" | "warning" | "blob_think" | "fec_warning" = "fec_warning", noEmojis: boolean = false) {
+    if(emoji == "warning") emoji = "fec_warning";
     if (!noEmojis) message = `${int.client.customEmojis.get(emoji)} ${message}`
     const components = [
         {
@@ -96,6 +97,21 @@ export function actionRowJSON(...components: any[]): any {
 export function isVoid(value: any): boolean {
     return value == null;
 }
+
+export function getFilesFromDir(dir: string): (string | string[])[] {
+    let results = [];
+
+    filesystem.readdirSync(dir).forEach(function(file) {
+        file = dir+'/'+file;
+        var stat = filesystem.statSync(file);
+
+        if (stat && stat.isDirectory()) {
+            results = results.concat(getFilesFromDir(file))
+        } else results.push(file);
+    });
+
+    return results;
+};
 
 export {
     calculatePermissionForRun,

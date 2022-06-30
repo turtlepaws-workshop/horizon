@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder } from "@discordjs/builders";
 import { ApplicationCommandAutocompleteOption, AutocompleteInteraction, Client, CommandInteraction, PermissionsString } from "discord.js";
+import { Categories } from "src/typings/types";
 import { CommandOptions, PermissionString } from "../typings";
 import SlashCommandOptionBuilder from "./optionBuilder";
 import HorizonSlashCommandBuilder from "./SlashCommandBuilder";
@@ -13,6 +14,7 @@ export default class Command {
     public builder!: HorizonSlashCommandBuilder;
     public dev: boolean = false;
     public serverOnly: boolean = true;
+    public category: Categories;
 
     constructor(options: CommandOptions){
         //Set permissions
@@ -27,6 +29,7 @@ export default class Command {
         this.name = builder.name;
         this.description = builder.description;
         this.dev = options.dev || false;
+        this.category = options.category;
     }
 
     builderJSON(){
@@ -42,6 +45,4 @@ export default class Command {
         interaction: AutocompleteInteraction,
         client: Client
     ): Promise<void> { }
-
-    
 }

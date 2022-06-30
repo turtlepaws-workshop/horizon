@@ -15,7 +15,8 @@ export default class InteractionCommandEvent extends Event {
     async execute(client: Client<boolean>, interaction: Interaction): Promise<void> {
         //Should be isChatInputCommand
         if(!interaction.isChatInputCommand()) return;
-        const Command = client.commands.all.find(e => e.name == interaction.commandName);
+        const Command = client.commands.all.find(e => e.builder.toJSON().name == interaction.commandName);
+        console.log(Command, client.commands, client.commands.all);
         if(!Command) return ErrorMessage(`Command not found...`, interaction);
         const channel = interaction.channel;
 
@@ -59,7 +60,9 @@ export default class InteractionCommandEvent extends Event {
             console.log(e);
             ErrorMessage(
                 `${await get("Error", interaction)}\n\n${codeBlock("js", e)}`,
-                interaction
+                interaction,
+                "blob_glitch",
+                true
             );
         }
     }
