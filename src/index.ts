@@ -15,7 +15,7 @@ import { GuildSettingsCache } from "./client/settings";
 import { AllIntents, AllPartials } from "./lib/all";
 import "./lib/extends";
 import { UtilDBManager } from "./sqlite";
-import { initPlugins, usePlugin } from "./modules";
+import { initPlugins, usePlugin } from "./util/modules";
 import { setPluginVaribles } from "./client/set";
 import { useAciiMessage } from "./util/aciiMessage";
 const Intents = IntentsBitField.Flags;

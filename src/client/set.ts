@@ -1,7 +1,7 @@
 import { Client } from "discord.js";
 import klawSync from "klaw-sync";
 import { basename } from "path";
-import { PluginArr } from "../modules";
+import { PluginArr } from "../util/modules";
 import { generateId } from "../lib/ID";
 
 export function setPluginVaribles(client: Client){

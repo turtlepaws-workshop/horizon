@@ -1,9 +1,9 @@
 import { ButtonBuilder } from "@discordjs/builders";
 import { ButtonStyle, Client, GuildMember, MessageOptions } from "discord.js";
-import { createURL, website } from "../../config/config";
-import { Embed } from "../../util/embed";
-import { actionRowJSON } from "../../util/util";
-import Event from "../../lib/event";
+import { createURL, website } from "../../../config/config";
+import { Embed } from "../../embed";
+import { actionRowJSON } from "../../util";
+import Event from "../../../lib/event";
 
 export default class OnJoin extends Event {
     constructor(){
@@ -26,7 +26,7 @@ export default class OnJoin extends Event {
             ),
             embeds: new Embed()
             .setTitle(`Verification for ${member.guild.name.length >= 5 ? `${member.guild.name.slice(0, 5)}...` : member.guild.name}`)
-            .setDescription(`This server has enabled [Verification](${createURL("/verification")}).\n\nStart your adventure by click the button below.`)
+            .setDescription(`This server has enabled [Verification](${createURL("/verification")}).\n\nStart your adventure by clicking the button below.`)
             .build()
         };
 

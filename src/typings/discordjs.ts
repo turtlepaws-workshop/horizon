@@ -7,7 +7,7 @@ import Event from '.././lib/event';
 import { GuildSettings } from '../entities/settings';
 import { UtilDBManager } from '../sqlite';
 import { Plugin } from '../lib/plugin';
-import { PluginClasses } from 'src/modules';
+import { PluginClasses } from 'src/util/modules';
 
 interface Settings {
     fetch: () => Promise<GuildSettings>;

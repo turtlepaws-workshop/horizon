@@ -322,5 +322,5 @@ export async function initExpress(client: Client) {
         }
     });
 
-    app.listen(8000, () => console.log("API up on port 2000 (for local use: http://localhost:2000/)".blue));
+    app.listen(8000, () => console.log("API up on port 2000 (for local use: http://localhost:8000/)".blue));
 }

@@ -6,7 +6,7 @@ export interface HorizonLogs {
     //cooldown: string;
 }
 
-export const Color: ColorResolvable = "Blurple";
+export const Color: ColorResolvable = "#F28458";
 export const TestGuild: string = "842575277249921074";
 export const SupportServer: string = "https://discord.gg/UTBuzEfFrS";
 export const website: string = "https://horizon.trtle.xyz/"

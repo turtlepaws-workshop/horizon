@@ -1,4 +1,4 @@
-# Horizon - A TS-built, open-source, multipurpose Discord bot.
+# ![Horizon](images/branding.svg)
 
 Thanks for checking out Horizon's Github! Here you can find the [emoji guilds](#emoji-guilds), [support server](#support-server), and [self-hosting guide](#self-hosting), have fun!
 
